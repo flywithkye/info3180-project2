@@ -6,17 +6,83 @@ This file creates your application.
 """
 
 from app import app
-from flask import render_template, request, jsonify, send_file
+from flask import render_template, request, jsonify, send_file , check_password_hash
 import os
+from models import User, db  
+from werkzeug.security import generate_password_hash
+
 
 
 ###
 # Routing for your application.
 ###
 
+
+
+
 @app.route('/')
 def index():
     return jsonify(message="This is the beginning of our API")
+
+
+@app.route('/api/v1/register' , methods=['POST'])
+def register():
+    data = request.json  # Access JSON data
+        
+    # Create a new user instance
+    new_user = User(
+        username=data['username'],
+        password=generate_password_hash(data['password']),
+        firstname=data['firstname'],
+        lastname=data['lastname'],
+        email=data['email'],
+        location = data['location'],
+        biography = data['biography'],
+        phone_number=data.get('phone_number'), 
+    )
+
+    #I just added this so I can see what is being commited to the db in the console/terminal
+    print(new_user)
+    
+    # Add the new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+    return jsonify({'message': 'User created successfully'}), 201
+
+
+
+
+@app.route('/api/v1/auth/login' , methods=['POST'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        # Get the username and password values from the form.
+        username = form.username.data
+        password = form.password.data
+
+        # Using the model, query database for a user based on the username
+        # and password submitted. Then compare the password hash.
+        user = User.query.filter_by(username=username).first()
+
+        if user and check_password_hash(user.password , password):
+            
+            # Login the user
+            login_user(user)
+
+            # # Remember to flash a message to the user
+            # flash('Login successful!', 'success')
+
+            # return redirect(url_for('upload'))  # Redirect to the home page
+        # else:
+            # Invalid username or password
+            # flash('Invalid username or password', 'error')
+
+    return render_template('login.html', form=form)
+
+
+
 
 
 ###
