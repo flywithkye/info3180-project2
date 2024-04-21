@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Add any model classes for Flask-SQLAlchemy here
 from . import db
 from werkzeug.security import generate_password_hash
@@ -90,3 +91,8 @@ class Users(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.username)
+=======
+# Add any model classes for Flask-SQLAlchemy here
+
+#This is just a test by Tareque to see if I can push to the repo
+>>>>>>> 119bb3cbc51b4a8dbaf2d3790189f9717f380daa
