@@ -5,18 +5,100 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file creates your application.
 """
 
-from app import app
-from flask import render_template, request, jsonify, send_file
+from app import app, login_manager, db
+from flask import render_template, request, jsonify, send_file, flash, url_for, redirect
+from flask_login import login_user, logout_user, current_user, login_required
 import os
+from app.forms import LoginForm, RegisterForm
+from app.models import Users
+from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
 
 
 ###
 # Routing for your application.
 ###
 
-@app.route('/')
-def index():
-    return jsonify(message="This is the beginning of our API")
+@app.route('/home')
+def home():
+    """Render website's home page."""
+    return render_template('home.html')
+
+@app.route('/explore')
+def explore():
+    """Render website's home page."""
+    return render_template('explore.html')
+
+@app.route('/profile')
+def profile():
+    """Render website's home page."""
+    return render_template('profile.html')
+
+@app.route('/logout')
+def logout():
+    """Render website's home page."""
+    logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
+
+
+@app.route('/', methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        user = db.session.execute(db.select(Users).filter_by(username=username)).scalar()
+
+        if user is not None and check_password_hash(user.password, password):
+            remember_me = False
+
+            if 'remember_me' in request.form:
+                remember_me = True
+            
+            login_user(user, remember=remember_me)
+            flash('Logged in Successfully.', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Username or Password is incorrect.', 'danger')
+    
+    return render_template("login.html", form=form)
+
+@login_manager.user_loader
+def load_user(id):
+    return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+        fname = form.fname.data
+        lname = form.lname.data
+        email = form.email.data
+        location = form.location.data
+        bio = form.bio.data
+        photo = form.photo.data
+
+        filename = secure_filename(photo.filename)
+        photo.save(os.path.join('uploads', filename))
+
+        User = Users(username=username, password=password, firstname=fname, 
+                     lastname=lname, email=email, location=location, biography=bio, 
+                     profile_photo=filename)
+        
+        if User is not None:
+            db.session.add(User)
+            db.session.commit()
+
+            flash('User Created')
+            return redirect(url_for('home'))
+
+    return render_template("register.html", form=form)
 
 
 ###
