@@ -5,7 +5,6 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file creates your application.
 """
 
-<<<<<<< HEAD
 from app import app, login_manager, db
 from flask import render_template, request, jsonify, send_file, flash, url_for, redirect
 from flask_login import login_user, logout_user, current_user, login_required
@@ -14,21 +13,12 @@ from app.forms import LoginForm, RegisterForm
 from app.models import Users
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
-=======
-from app import app
-from flask import render_template, request, jsonify, send_file , check_password_hash
-import os
-from models import User, db  
-from werkzeug.security import generate_password_hash
-
->>>>>>> c22d1e93737e2f248b7c096ef5f1582ebc99a8b7
 
 
 ###
 # Routing for your application.
 ###
 
-<<<<<<< HEAD
 @app.route('/home')
 def home():
     """Render website's home page."""
@@ -80,100 +70,98 @@ def login():
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-@app.route('/register', methods=['POST', 'GET'])
+@app.route('/register', methods=['POST'])
 def register():
-    form = RegisterForm()
+    data = request.get_json()
 
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
-        fname = form.fname.data
-        lname = form.lname.data
-        email = form.email.data
-        location = form.location.data
-        bio = form.bio.data
-        photo = form.photo.data
+    if data:
+        username = data.get('username')
+        password = data.get('password')
+        fname = data.get('fname')
+        lname = data.get('lname')
+        email = data.get('email')
+        location = data.get('location')
+        bio = data.get('bio')
+        photo = data.get('photo')
 
-        filename = secure_filename(photo.filename)
-        photo.save(os.path.join('uploads', filename))
+        # Additional validation can be added here if necessary
 
-        User = Users(username=username, password=password, firstname=fname, 
-                     lastname=lname, email=email, location=location, biography=bio, 
-                     profile_photo=filename)
-        
-        if User is not None:
-            db.session.add(User)
+        if username and password and fname and lname and email:
+            # Save photo to uploads folder
+            filename = secure_filename(photo['filename'])
+            photo.save(os.path.join('uploads', filename))
+
+            # Create user object
+            user = Users(username=username, password=password, firstname=fname, 
+                         lastname=lname, email=email, location=location, biography=bio, 
+                         profile_photo=filename)
+
+            # Add user to database
+            db.session.add(user)
             db.session.commit()
 
-            flash('User Created')
-            return redirect(url_for('home'))
-
-    return render_template("register.html", form=form)
-=======
-
-
-
-@app.route('/')
-def index():
-    return jsonify(message="This is the beginning of our API")
->>>>>>> c22d1e93737e2f248b7c096ef5f1582ebc99a8b7
+            return jsonify({"message": "User created successfully"}), 201
+        else:
+            return jsonify({"message": "Missing required fields"}), 400
+    else:
+        return jsonify({"message": "No data received"}), 400
 
 
-@app.route('/api/v1/register' , methods=['POST'])
-def register():
-    data = request.json  # Access JSON data
+# @app.route('/api/v1/register' , methods=['POST'])
+# def register():
+#     data = request.json  # Access JSON data
         
-    # Create a new user instance
-    new_user = User(
-        username=data['username'],
-        password=generate_password_hash(data['password']),
-        firstname=data['firstname'],
-        lastname=data['lastname'],
-        email=data['email'],
-        location = data['location'],
-        biography = data['biography'],
-        phone_number=data.get('phone_number'), 
-    )
+#     # Create a new user instance
+#     new_user = User(
+#         username=data['username'],
+#         password=generate_password_hash(data['password']),
+#         firstname=data['firstname'],
+#         lastname=data['lastname'],
+#         email=data['email'],
+#         location = data['location'],
+#         biography = data['biography'],
+#         phone_number=data.get('phone_number'), 
+#     )
 
-    #I just added this so I can see what is being commited to the db in the console/terminal
-    print(new_user)
+#     #I just added this so I can see what is being commited to the db in the console/terminal
+#     print(new_user)
     
-    # Add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
+#     # Add the new user to the database
+#     db.session.add(new_user)
+#     db.session.commit()
 
-    return jsonify({'message': 'User created successfully'}), 201
-
-
+#     return jsonify({'message': 'User created successfully'}), 201
 
 
-@app.route('/api/v1/auth/login' , methods=['POST'])
-def login():
-    form = LoginForm()
 
-    if form.validate_on_submit():
-        # Get the username and password values from the form.
-        username = form.username.data
-        password = form.password.data
 
-        # Using the model, query database for a user based on the username
-        # and password submitted. Then compare the password hash.
-        user = User.query.filter_by(username=username).first()
+# @app.route('/api/v1/auth/login' , methods=['POST'])
+# def login():
+#     form = LoginForm()
 
-        if user and check_password_hash(user.password , password):
+#     if form.validate_on_submit():
+#         # Get the username and password values from the form.
+#         username = form.username.data
+#         password = form.password.data
+
+#         # Using the model, query database for a user based on the username
+#         # and password submitted. Then compare the password hash.
+#         user = User.query.filter_by(username=username).first()
+
+#         if user and check_password_hash(user.password , password):
             
-            # Login the user
-            login_user(user)
+#             # Login the user
+#             login_user(user)
 
-            # # Remember to flash a message to the user
-            # flash('Login successful!', 'success')
+#             # # Remember to flash a message to the user
+#             # flash('Login successful!', 'success')
 
-            # return redirect(url_for('upload'))  # Redirect to the home page
-        # else:
-            # Invalid username or password
-            # flash('Invalid username or password', 'error')
+#             # return redirect(url_for('upload'))  # Redirect to the home page
+#         # else:
+#             # Invalid username or password
+#             # flash('Invalid username or password', 'error')
 
-    return render_template('login.html', form=form)
+#     return render_template('login.html', form=form)
 
 
 
