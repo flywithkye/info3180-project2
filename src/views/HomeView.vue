@@ -27,7 +27,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
             </p>
             <div id="homepg_btns">
               <button @click="$router.push('register')" type="button" id="homepg_btn1" class="btn"> Register</button>  
-              <button type="button" id="homepg_btn2" class="btn"> Login</button>
+              <button @click="$router.push('login')" type="button" id="homepg_btn2" class="btn"> Login</button>
             </div>     
           </div>  
         </div>
