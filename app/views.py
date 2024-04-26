@@ -5,7 +5,6 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file creates your application.
 """
 
-<<<<<<< HEAD
 from app import app, login_manager, db
 from flask import render_template, request, jsonify, send_file, flash, url_for, redirect
 from flask_login import login_user, logout_user, current_user, login_required
@@ -14,21 +13,18 @@ from app.forms import LoginForm, RegisterForm
 from app.models import Users
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
-=======
 from app import app
 from flask import render_template, request, jsonify, send_file , check_password_hash
 import os
 from models import User, db  
 from werkzeug.security import generate_password_hash
 
->>>>>>> c22d1e93737e2f248b7c096ef5f1582ebc99a8b7
 
 
 ###
 # Routing for your application.
 ###
 
-<<<<<<< HEAD
 @app.route('/home')
 def home():
     """Render website's home page."""
@@ -109,14 +105,11 @@ def register():
             return redirect(url_for('home'))
 
     return render_template("register.html", form=form)
-=======
-
 
 
 @app.route('/')
 def index():
     return jsonify(message="This is the beginning of our API")
->>>>>>> c22d1e93737e2f248b7c096ef5f1582ebc99a8b7
 
 
 @app.route('/api/v1/register' , methods=['POST'])
