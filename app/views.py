@@ -83,41 +83,8 @@ def login():
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/v1/register', methods=['POST'])
 def register():
-    data = request.get_json()
-
-    if data:
-        username = data.get('username')
-        password = data.get('password')
-        fname = data.get('fname')
-        lname = data.get('lname')
-        email = data.get('email')
-        location = data.get('location')
-        bio = data.get('bio')
-        photo = data.get('photo')
-
-        # Additional validation can be added here if necessary
-
-        if username and password and fname and lname and email:
-            # Save photo to uploads folder
-            filename = secure_filename(photo['filename'])
-            photo.save(os.path.join('uploads', filename))
-
-            # Create user object
-            user = Users(username=username, password=password, firstname=fname, 
-                         lastname=lname, email=email, location=location, biography=bio, 
-                         profile_photo=filename)
-
-            # Add user to database
-            db.session.add(user)
-            db.session.commit()
-
-            return jsonify({"message": "User created successfully"}), 201
-        else:
-            return jsonify({"message": "Missing required fields"}), 400
-    else:
-        return jsonify({"message": "No data received"}), 400
     # Check if the request contains form data
     if 'photo' not in request.files:
         return jsonify({"message": "No photo uploaded"}), 400
@@ -157,9 +124,9 @@ def index():
     return jsonify(message="This is the beginning of our API")
 
 
-@app.route('/api/v1/register' , methods=['POST'])
-def register():
-    data = request.json  # Access JSON data
+# @app.route('/api/v1/register' , methods=['POST'])
+# def register():
+#     data = request.json  # Access JSON data
         
 #     # Create a new user instance
 #     new_user = User(
