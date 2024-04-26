@@ -14,7 +14,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
         <div id="homepg_btndiv">
           <div id="homepg_btnheader">
             <img alt="Camera Icon" id="homepg_btnheaderpic" src="@/assets/Dcamera_icon.png"/>
-            <h1>Photogram</h1>              
+            <h3>Photogram</h3>              
           </div>
           <div id="homepg_btncontent">
             <h5 class="text-center">
@@ -72,7 +72,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   }
 
   #homepg_btnheaderpic{
-    margin: 7px 10px 0px 0px;
+    margin: 0px 9px 15px 0px;
     width: 35px;
     height: 38px;
   }
@@ -97,10 +97,20 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
     width: 150px;
   }
 
+  #homepg_btn1:hover {
+    background-color: #347d5c;
+    cursor: pointer;
+  }
+
   #homepg_btn2{
     background-color: #493E90;
     color: #fff;
     margin: 0px 0px 0px 15px;
     width: 150px;
+  }
+
+  #homepg_btn2:hover {
+    background-color: #472c6e;
+    cursor: pointer;
   }
 </style>

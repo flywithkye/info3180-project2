@@ -90,7 +90,7 @@
         for (const key in formData.value) {
           formDataObj.append(key, formData.value[key]);
         }
-        const response = await axios.post('http://192.168.0.2:8080/register', formDataObj, {
+        const response = await axios.post('http://192.168.0.3:8080/register', formDataObj, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -165,6 +165,11 @@
     background-color: #3E905C;
     color: #fff;
     width: 100%;
+  }
+
+  #regis_formbtn:hover {
+    background-color: #347d5c;
+    cursor: pointer;
   }
 
   #regis_formbtndiv{
