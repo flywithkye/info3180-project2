@@ -90,11 +90,12 @@
         for (const key in formData.value) {
           formDataObj.append(key, formData.value[key]);
         }
-        const response = await axios.post('http://192.168.0.3:8080/register', formDataObj, {
+        const response = await axios.post('http://localhost:8080/api/v1/register', formDataObj, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
+
         if (response.data.message === 'User created successfully') {
           success.value = response.data.message;
         } else {

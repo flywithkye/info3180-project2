@@ -27,22 +27,22 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
 
-    {
-      path: '/explore',
-      name: 'explore',
-      // component: () => import('../views/ExploreView.vue')
-    },
+    // {
+    //   path: '/explore',
+    //   name: 'explore',
+    //   // component: () => import('../views/ExploreView.vue')
+    // },
 
     {
       path: '/login',
       name: 'login',
-      // component: () => import('../views/LoginView.vue')
+      component: () => import('../views/LoginView.vue')
     },
 
-    {
-      path: '/logout',
-      name: 'logout',
-    }
+    // {
+    //   path: '/logout',
+    //   name: 'logout',
+    // }
   ]
 })
 

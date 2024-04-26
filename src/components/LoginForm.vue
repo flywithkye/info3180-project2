@@ -1,0 +1,128 @@
+<template>
+    <div id="login_formdiv">
+
+        <div id="login_headerdiv">
+            <img alt="Camera Icon" id="login_headerpic" src="@/assets/Dcamera_icon.png"/>
+            <h3 id="login_headertxt">Photogram</h3>              
+        </div>
+
+        <div id="login_forminput">
+            <form @submit.prevent="registerUser">          
+                <div id="login_forminfo">
+                <p>
+                  Welcome Back! Ready to return to the world of Photogram? Login now.
+                </p>
+                </div>
+
+                <div class="form-group">
+                <label>Username:</label>
+                <input type="text" class="form-control" v-model="formData.username" required><br>
+                </div>
+
+                <div class="form-group">   
+                <label>Password:</label>
+                <input type="password" class="form-control" v-model="formData.password" required><br>       
+                </div>
+
+                <div class="form-group" id="login_formbtndiv"> 
+                <button type="submit" class="btn" id="login_formbtn">Login</button>         
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <p v-if="error">{{ error }}</p>
+    <p v-if="success">{{ success }}</p>
+</template>
+
+<script setup>
+    import { ref } from 'vue';
+    import axios from 'axios';
+    
+    const formData = ref({
+      username: '',
+      password: ''
+    });
+    const error = ref('');
+    const success = ref('');
+    
+    const loginUser = async () => {
+      try {
+      } catch (error) {
+        error.value = 'An error occurred while logging in the user.';
+      }
+    };
+    
+    const handleFileUpload = (event) => {
+      formData.value.photo = event.target.files[0];
+    };
+</script>
+
+<style>
+  #login_formdiv{
+    display: flex;
+    flex-direction: column;
+    min-width: 100px;
+    max-width: 500px;
+    margin: 30px auto auto auto;
+    border: 0.4px solid rgb(179, 179, 179);
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+    border-radius: 4px;
+    padding: 40px;
+  }
+
+  #login_headerdiv{
+    display: flex;
+    justify-content: center;
+    margin: 0px 0px 10px 0px;
+  }
+
+  #login_headerpic{
+    margin: 0px 7px 0px 0px;
+    width: 32px;
+    height: 32px;
+  }
+
+  #login_headertxt{
+    font-size: 25px;
+  }
+
+  div label, div input{
+    font-size: 15px;
+    font-weight: bold;
+    color: rgb(55, 55, 55);
+    display: block-inline;
+  }
+  
+  #login_forminput{
+    display: flex;
+    justify-content: center;
+  }
+
+  #login_forminfo{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    margin: 0px 0px 15px 0px;
+    border: 0.4px solid rgb(179, 179, 179);
+    border-radius: 4px;
+    padding: 10px 10px 2px 10px;
+  }
+
+  #login_formbtn{
+    background-color: #3E905C;
+    color: #fff;
+    width: 100%;
+  }
+
+  #login_formbtn:hover {
+    background-color: #347d5c;
+    cursor: pointer;
+  }
+
+  #login_formbtndiv{
+    display: flex;
+    justify-content: center;
+  }
+</style>

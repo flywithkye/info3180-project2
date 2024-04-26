@@ -22,7 +22,7 @@
               <RouterLink to="/" class="nav-link active">Home</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
+              <RouterLink class="nav-link" to="">Explore</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link" to="">My Profile</RouterLink>
@@ -31,7 +31,7 @@
               <RouterLink class="nav-link" to="/login">Login</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/logout">Logout</RouterLink>
+              <RouterLink class="nav-link" to="">Logout</RouterLink>
             </li>
           </ul>
         </div>
