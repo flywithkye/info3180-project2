@@ -5,81 +5,163 @@ Werkzeug Documentation:  https://werkzeug.palletsprojects.com/
 This file creates your application.
 """
 
-from app import app
-from flask import render_template, request, jsonify, send_file , check_password_hash
+from app import app, login_manager, db
+from flask import render_template, request, jsonify, send_file, flash, url_for, redirect
+from flask_login import login_user, logout_user, current_user, login_required
 import os
-from models import User, db  
-from werkzeug.security import generate_password_hash
-
+from app.forms import LoginForm, RegisterForm
+from app.models import Users
+from werkzeug.utils import secure_filename
+from werkzeug.security import check_password_hash
 
 
 ###
 # Routing for your application.
 ###
 
+@app.route('/home')
+def home():
+    """Render website's home page."""
+    return render_template('home.html')
+
+@app.route('/explore')
+def explore():
+    """Render website's home page."""
+    return render_template('explore.html')
+
+@app.route('/profile')
+def profile():
+    """Render website's home page."""
+    return render_template('profile.html')
+
+@app.route('/logout')
+def logout():
+    """Render website's home page."""
+    logout_user()
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
 
 
-
-@app.route('/')
-def index():
-    return jsonify(message="This is the beginning of our API")
-
-
-@app.route('/api/v1/register' , methods=['POST'])
-def register():
-    data = request.json  # Access JSON data
-        
-    # Create a new user instance
-    new_user = User(
-        username=data['username'],
-        password=generate_password_hash(data['password']),
-        firstname=data['firstname'],
-        lastname=data['lastname'],
-        email=data['email'],
-        location = data['location'],
-        biography = data['biography'],
-        phone_number=data.get('phone_number'), 
-    )
-
-    #I just added this so I can see what is being commited to the db in the console/terminal
-    print(new_user)
-    
-    # Add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
-
-    return jsonify({'message': 'User created successfully'}), 201
-
-
-
-
-@app.route('/api/v1/auth/login' , methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        # Get the username and password values from the form.
         username = form.username.data
         password = form.password.data
 
-        # Using the model, query database for a user based on the username
-        # and password submitted. Then compare the password hash.
-        user = User.query.filter_by(username=username).first()
+        user = db.session.execute(db.select(Users).filter_by(username=username)).scalar()
 
-        if user and check_password_hash(user.password , password):
+        if user is not None and check_password_hash(user.password, password):
+            remember_me = False
+
+            if 'remember_me' in request.form:
+                remember_me = True
             
-            # Login the user
-            login_user(user)
+            login_user(user, remember=remember_me)
+            flash('Logged in Successfully.', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('Username or Password is incorrect.', 'danger')
+    
+    return render_template("login.html", form=form)
 
-            # # Remember to flash a message to the user
-            # flash('Login successful!', 'success')
+@login_manager.user_loader
+def load_user(id):
+    return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-            # return redirect(url_for('upload'))  # Redirect to the home page
-        # else:
-            # Invalid username or password
-            # flash('Invalid username or password', 'error')
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.get_json()
 
-    return render_template('login.html', form=form)
+    if data:
+        username = data.get('username')
+        password = data.get('password')
+        fname = data.get('fname')
+        lname = data.get('lname')
+        email = data.get('email')
+        location = data.get('location')
+        bio = data.get('bio')
+        photo = data.get('photo')
+
+        # Additional validation can be added here if necessary
+
+        if username and password and fname and lname and email:
+            # Save photo to uploads folder
+            filename = secure_filename(photo['filename'])
+            photo.save(os.path.join('uploads', filename))
+
+            # Create user object
+            user = Users(username=username, password=password, firstname=fname, 
+                         lastname=lname, email=email, location=location, biography=bio, 
+                         profile_photo=filename)
+
+            # Add user to database
+            db.session.add(user)
+            db.session.commit()
+
+            return jsonify({"message": "User created successfully"}), 201
+        else:
+            return jsonify({"message": "Missing required fields"}), 400
+    else:
+        return jsonify({"message": "No data received"}), 400
+
+
+# @app.route('/api/v1/register' , methods=['POST'])
+# def register():
+#     data = request.json  # Access JSON data
+        
+#     # Create a new user instance
+#     new_user = User(
+#         username=data['username'],
+#         password=generate_password_hash(data['password']),
+#         firstname=data['firstname'],
+#         lastname=data['lastname'],
+#         email=data['email'],
+#         location = data['location'],
+#         biography = data['biography'],
+#         phone_number=data.get('phone_number'), 
+#     )
+
+#     #I just added this so I can see what is being commited to the db in the console/terminal
+#     print(new_user)
+    
+#     # Add the new user to the database
+#     db.session.add(new_user)
+#     db.session.commit()
+
+#     return jsonify({'message': 'User created successfully'}), 201
+
+
+
+
+# @app.route('/api/v1/auth/login' , methods=['POST'])
+# def login():
+#     form = LoginForm()
+
+#     if form.validate_on_submit():
+#         # Get the username and password values from the form.
+#         username = form.username.data
+#         password = form.password.data
+
+#         # Using the model, query database for a user based on the username
+#         # and password submitted. Then compare the password hash.
+#         user = User.query.filter_by(username=username).first()
+
+#         if user and check_password_hash(user.password , password):
+            
+#             # Login the user
+#             login_user(user)
+
+#             # # Remember to flash a message to the user
+#             # flash('Login successful!', 'success')
+
+#             # return redirect(url_for('upload'))  # Redirect to the home page
+#         # else:
+#             # Invalid username or password
+#             # flash('Invalid username or password', 'error')
+
+#     return render_template('login.html', form=form)
 
 
 

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+{% include 'flash_messages.html' %}
+<form class="form-login m-auto" method="post" enctype="multipart/form-data">
+  {{ form.csrf_token }}
+  <h2 class="pb-3">Login</h2>
+  <div class="shadow p-3 mb-5 bg-white rounded">
+    <div class="mb-3 pt-3">
+        <h5>Username</h5>
+        {{ form.username(class='form-control') }}
+    </div>
+    <div class="mb-3">
+        <h5>Password</h5>
+        {{ form.password(class='form-control') }}
+    </div>
+    <div class="form-group">
+        {{ form.remember_me }} {{ form.remember_me.label }}
+      </div>
+    <button class="btn btn-success w-100 mt-3" type="submit">Login</button>
+    <div class="d-flex justify-content-center pt-3">
+        <a class="nav-link" href="{{ url_for('register') }}">Register here</a></p>
+    </div>
+   </div>
+</form>
+{% endblock %}
