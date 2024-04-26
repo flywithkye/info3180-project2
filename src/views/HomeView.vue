@@ -9,11 +9,11 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
     <div class="container">
       <div id="homepg_div">      
         <div id="homepg_picdiv">          
-          <img alt="Vue logo" id="homepg_pic" src="@/assets/nature_pic.jpg"/>
+          <img alt="Homepage Nature Pic" id="homepg_pic" src="@/assets/nature_pic.jpg"/>
         </div>
         <div id="homepg_btndiv">
           <div id="homepg_btnheader">
-            <img alt="Vue logo" id="homepg_btnheaderpic" src="@/assets/Dcamera_icon.png"/>
+            <img alt="Camera Icon" id="homepg_btnheaderpic" src="@/assets/Dcamera_icon.png"/>
             <h1>Photogram</h1>              
           </div>
           <div id="homepg_btncontent">
@@ -26,7 +26,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
               Photogram invites you to capture the globe, one frame at a time.
             </p>
             <div id="homepg_btns">
-              <button type="button" id="homepg_btn1" class="btn"> Register</button>  
+              <button @click="$router.push('register')" type="button" id="homepg_btn1" class="btn"> Register</button>  
               <button type="button" id="homepg_btn2" class="btn"> Login</button>
             </div>     
           </div>  
