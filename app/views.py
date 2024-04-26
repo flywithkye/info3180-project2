@@ -72,39 +72,38 @@ def load_user(id):
 
 @app.route('/api/v1/register', methods=['POST'])
 def register():
-    data = request.get_json()
+    # Check if the request contains form data
+    if 'photo' not in request.files:
+        return jsonify({"message": "No photo uploaded"}), 400
 
-    if data:
-        username = data.get('username')
-        password = data.get('password')
-        fname = data.get('fname')
-        lname = data.get('lname')
-        email = data.get('email')
-        location = data.get('location')
-        bio = data.get('bio')
-        photo = data.get('photo')
+    photo = request.files['photo']
+    if photo.filename == '':
+        return jsonify({"message": "No selected photo"}), 400
 
-        # Additional validation can be added here if necessary
+    # Check if the form fields are present
+    username = request.form.get('username')
+    password = request.form.get('password')
+    fname = request.form.get('fname')
+    lname = request.form.get('lname')
+    email = request.form.get('email')
 
-        if username and password and fname and lname and email:
-            # Save photo to uploads folder
-            filename = secure_filename(photo['filename'])
-            photo.save(os.path.join('uploads', filename))
+    if not all([username, password, fname, lname, email]):
+        return jsonify({"message": "Missing required fields"}), 400
 
-            # Create user object
-            user = Users(username=username, password=password, firstname=fname, 
-                         lastname=lname, email=email, location=location, biography=bio, 
-                         profile_photo=filename)
+    # Save photo to uploads folder
+    filename = secure_filename(photo.filename)
+    photo.save(os.path.join('uploads', filename))
 
-            # Add user to database
-            db.session.add(user)
-            db.session.commit()
+    # Create user object
+    user = Users(username=username, password=password, firstname=fname, 
+                 lastname=lname, email=email, location=request.form.get('location'), 
+                 biography=request.form.get('bio'), profile_photo=filename)
 
-            return jsonify({"message": "User created successfully"}), 201
-        else:
-            return jsonify({"message": "Missing required fields"}), 400
-    else:
-        return jsonify({"message": "No data received"}), 400
+    # Add user to database
+    db.session.add(user)
+    db.session.commit()
+
+    return jsonify({"message": "User created successfully"}), 201
 
 
 # @app.route('/api/v1/register' , methods=['POST'])

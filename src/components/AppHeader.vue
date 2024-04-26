@@ -3,7 +3,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top"  style="background-color: #3E905C;">
       <div class="container-fluid">
         <a class="navbar-brand" href="/">          
-          <img alt="Vue logo" class="logo" id="header_icon" src="@/assets/Lcamera_icon.png"/>
+          <img alt="Camera Icon" class="logo" id="header_icon" src="@/assets/Lcamera_icon.png"/>
           Photogram</a>
         <button
           class="navbar-toggler"
@@ -22,14 +22,16 @@
               <RouterLink to="/" class="nav-link active">Home</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="">Explore</RouterLink>
+              <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="">My Profile</RouterLink>
+              <RouterLink class="nav-link" to="/myprofile">My Profile</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="">Logout</RouterLink>
+              <RouterLink class="nav-link" to="/myprofile">Logout</RouterLink>
             </li>
+
+
           </ul>
         </div>
       </div>
