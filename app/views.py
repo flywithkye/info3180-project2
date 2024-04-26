@@ -83,7 +83,7 @@ def login():
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/v1/register', methods=['POST'])
 def register():
     # Check if the request contains form data
     if 'photo' not in request.files:
@@ -112,16 +112,20 @@ def register():
                  lastname=lname, email=email, location=request.form.get('location'), 
                  biography=request.form.get('bio'), profile_photo=filename)
 
-    # Add user to database
-    db.session.add(user)
-    db.session.commit()
+    flash('User Created')
+    return redirect(url_for('home'))
 
-    return jsonify({"message": "User created successfully"}), 201
+    return render_template("register.html", form=form)
 
 
-# @app.route('/api/v1/register' , methods=['POST'])
-# def register():
-#     data = request.json  # Access JSON data
+@app.route('/')
+def index():
+    return jsonify(message="This is the beginning of our API")
+
+
+@app.route('/api/v1/register' , methods=['POST'])
+def register():
+    data = request.json  # Access JSON data
         
 #     # Create a new user instance
 #     new_user = User(

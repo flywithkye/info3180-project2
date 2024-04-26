@@ -1,8 +1,10 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top"  style="background-color: #3E905C;">
       <div class="container-fluid">
-        <a class="navbar-brand" href="/">Photogram</a>
+        <a class="navbar-brand" href="/">          
+          <img alt="Camera Icon" class="logo" id="header_icon" src="@/assets/Lcamera_icon.png"/>
+          Photogram</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -15,7 +17,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto">
+          <ul class="navbar-nav navbar-right">
             <li class="nav-item">
               <RouterLink to="/" class="nav-link active">Home</RouterLink>
             </li>
@@ -23,13 +25,17 @@
               <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/myprofile">My Profile</RouterLink>
+              <RouterLink class="nav-link" to="">My Profile</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/myprofile">Logout</RouterLink>
+              <RouterLink class="nav-link" to="/login">Login</RouterLink>
             </li>
-
-
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/logout">Logout</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" to="/register">Register</RouterLink>
+            </li>
           </ul>
         </div>
       </div>
@@ -38,9 +44,13 @@
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
+  import { RouterLink } from "vue-router";
 </script>
 
 <style>
-/* Add any component specific styles here */
+ #header_icon{
+  margin: 0px 2px 2px 7px;
+  width: 23px;
+  height: 23px;
+ }
 </style>
