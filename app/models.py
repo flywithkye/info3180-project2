@@ -1,6 +1,8 @@
 # Add any model classes for Flask-SQLAlchemy here
 from . import db
 from werkzeug.security import generate_password_hash
+from datetime import datetime
+from flask import url_for
 
 class Posts(db.Model):
     # You can use this to change the table name. The default convention is to use
@@ -22,6 +24,18 @@ class Posts(db.Model):
         self.user_id = user_id
         self.created_on = created_on
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "caption": self.caption,
+            "photo": self.photo, 
+            "user_id": self.user_id,
+            "created_on": self.created_on
+        }
+    
+    def _repr_(self):
+        return "<User %r>" % self.photo
+
 class Likes(db.Model):
     __tablename__ = 'likes'
 
@@ -34,6 +48,16 @@ class Likes(db.Model):
         self.post_id = post_id
         self.user_id = user_id
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "post_id": self.post_id,
+            "user_id": self.user_id,
+        }
+    
+    def _repr_(self):
+        return "<User %r>" % self.post_id
+
 class Follows(db.Model):
     __tablename__ = 'follows'
 
@@ -45,6 +69,16 @@ class Follows(db.Model):
         self.id = id
         self.follower_id = follower_id
         self.user_id = user_id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "follower_id": self.follower_id,
+            "user_id": self.user_id,
+        }
+    
+    def _repr_(self):
+        return "<User %r>" % self.follower_id
 
 class Users(db.Model):
     __tablename__ = 'users'
@@ -70,6 +104,21 @@ class Users(db.Model):
         self.location = location
         self.biography = biography
         self.profile_photo = profile_photo
+
+    def serialize(self):
+        return {
+            "username": self.username,
+            "password": self.password, 
+            "firstname": self.firstname,
+            "lastname": self.lastname, 
+            "email": self.email,
+            "location": self.location,
+            "biography": self.biography, 
+            "profile_photo": self.profile_photo
+        }
+    
+    def _repr_(self):
+        return "<User %r>" % self.caption
     
     def is_authenticated(self):
         return True

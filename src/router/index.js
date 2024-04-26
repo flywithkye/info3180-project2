@@ -27,11 +27,11 @@ const router = createRouter({
       component: () => import('../views/RegisterView.vue')
     },
 
-    // {
-    //   path: '/explore',
-    //   name: 'explore',
-    //   // component: () => import('../views/ExploreView.vue')
-    // },
+    {
+      path: '/explore',
+      name: 'explore',
+      // component: () => import('../views/ExploreView.vue')
+    },
 
     {
       path: '/login',
@@ -39,10 +39,11 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue')
     },
 
-    // {
-    //   path: '/logout',
-    //   name: 'logout',
-    // }
+    {
+      path: '/logout',
+      name: 'logout',
+      component: HomeView
+    }
   ]
 })
 

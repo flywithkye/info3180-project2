@@ -13,6 +13,8 @@ from app.forms import LoginForm, RegisterForm
 from app.models import Users
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
+from werkzeug.exceptions import BadRequest
+
 
 
 ###
@@ -42,36 +44,80 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/api/v1/auth/login', methods=['POST'])
 def login():
-    form = LoginForm()
+    try:
+        username = request.form.get('username')
+        print (username)
+        password = request.form.get('password')
+        tenant_id = request.headers.get('Tenant-ID')  # Extract tenant ID from request headers
 
-    if form.validate_on_submit():
-        username = form.username.data
-        password = form.password.data
+        if not username or not password:
+            raise BadRequest(description='Username or password not provided')
 
-        user = db.session.execute(db.select(Users).filter_by(username=username)).scalar()
+        # Find user by username
+        user = Users.query.filter_by(username=username, tenant_id=tenant_id).first()
 
-        if user is not None and check_password_hash(user.password, password):
-            remember_me = False
+        # If user not found or password doesn't match, return error
+        if not user or not check_password_hash(user.password, password):
+            return jsonify({'message': 'Invalid username or password'}), 401
 
-            if 'remember_me' in request.form:
-                remember_me = True
-            
-            login_user(user, remember=remember_me)
-            flash('Logged in Successfully.', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('Username or Password is incorrect.', 'danger')
-    
-    return render_template("login.html", form=form)
+        # Check if tenant ID matches
+        if user.tenant_id != tenant_id:
+            return jsonify({'message': 'Invalid tenant ID for this user'}), 401
+
+        # Generate JWT token
+        # access_token = generate_jwt_token(user)
+
+        return jsonify({"message": "Logged in successfully"}), 200
+
+    except BadRequest as e:
+        return jsonify({'message': str(e)}), 400
+
+    except Exception as e:
+        # Handle other exceptions
+        return jsonify({'message': 'Internal Server Error'}), 500
+
 
 @login_manager.user_loader
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-@app.route('/api/v1/register', methods=['POST'])
+@app.route('/register', methods=['POST'])
 def register():
+    data = request.get_json()
+
+    if data:
+        username = data.get('username')
+        password = data.get('password')
+        fname = data.get('fname')
+        lname = data.get('lname')
+        email = data.get('email')
+        location = data.get('location')
+        bio = data.get('bio')
+        photo = data.get('photo')
+
+        # Additional validation can be added here if necessary
+
+        if username and password and fname and lname and email:
+            # Save photo to uploads folder
+            filename = secure_filename(photo['filename'])
+            photo.save(os.path.join('uploads', filename))
+
+            # Create user object
+            user = Users(username=username, password=password, firstname=fname, 
+                         lastname=lname, email=email, location=location, biography=bio, 
+                         profile_photo=filename)
+
+            # Add user to database
+            db.session.add(user)
+            db.session.commit()
+
+            return jsonify({"message": "User created successfully"}), 201
+        else:
+            return jsonify({"message": "Missing required fields"}), 400
+    else:
+        return jsonify({"message": "No data received"}), 400
     # Check if the request contains form data
     if 'photo' not in request.files:
         return jsonify({"message": "No photo uploaded"}), 400
@@ -106,9 +152,14 @@ def register():
     return jsonify({"message": "User created successfully"}), 201
 
 
-# @app.route('/api/v1/register' , methods=['POST'])
-# def register():
-#     data = request.json  # Access JSON data
+@app.route('/')
+def index():
+    return jsonify(message="This is the beginning of our API")
+
+
+@app.route('/api/v1/register' , methods=['POST'])
+def register():
+    data = request.json  # Access JSON data
         
 #     # Create a new user instance
 #     new_user = User(
