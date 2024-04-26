@@ -131,8 +131,8 @@
 
   #regis_headerpic{
     margin: 0px 7px 0px 0px;
-    width: 33px;
-    height: 35px;
+    width: 32px;
+    height: 32px;
   }
 
   #regis_headertxt{

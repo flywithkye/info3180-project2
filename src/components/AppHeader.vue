@@ -46,7 +46,7 @@
 
 <style>
  #header_icon{
-  margin: 0px 2px 2px 0px;
+  margin: 0px 2px 2px 7px;
   width: 23px;
   height: 23px;
  }
