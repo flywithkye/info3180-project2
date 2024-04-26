@@ -70,7 +70,7 @@ def login():
 def load_user(id):
     return db.session.execute(db.select(Users).filter_by(id=id)).scalar()
 
-@app.route('/register', methods=['POST'])
+@app.route('/api/v1/register', methods=['POST'])
 def register():
     data = request.get_json()
 
