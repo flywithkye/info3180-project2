@@ -48,8 +48,12 @@
       for (const key in formData.value) {
         formDataObj.append(key, formData.value[key]);
       }
-      const response = await axios.post('/register', formDataObj);
-      if (response.data.message === 'User Created') {
+      const response = await axios.post('http://192.168.0.2:8080/register', formDataObj, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      if (response.data.message === 'User created successfully') {
         success.value = response.data.message;
       } else {
         error.value = response.data.message;
@@ -63,4 +67,4 @@
     formData.value.photo = event.target.files[0];
   };
   </script>
-  
+    
