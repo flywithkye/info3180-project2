@@ -11,6 +11,8 @@ from flask_login import login_user, logout_user, current_user, login_required
 import os
 from app.forms import LoginForm, RegisterForm
 from app.models import Users
+from app.models import Posts
+
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
 from werkzeug.exceptions import BadRequest
@@ -48,23 +50,18 @@ def logout():
 def login():
     try:
         username = request.form.get('username')
-        print (username)
+        print(username)
         password = request.form.get('password')
-        tenant_id = request.headers.get('Tenant-ID')  # Extract tenant ID from request headers
 
         if not username or not password:
             raise BadRequest(description='Username or password not provided')
 
         # Find user by username
-        user = Users.query.filter_by(username=username, tenant_id=tenant_id).first()
+        user = Users.query.filter_by(username=username).first()
 
         # If user not found or password doesn't match, return error
         if not user or not check_password_hash(user.password, password):
             return jsonify({'message': 'Invalid username or password'}), 401
-
-        # Check if tenant ID matches
-        if user.tenant_id != tenant_id:
-            return jsonify({'message': 'Invalid tenant ID for this user'}), 401
 
         # Generate JWT token
         # access_token = generate_jwt_token(user)
@@ -119,67 +116,38 @@ def register():
     return jsonify({"message": "User created successfully"}), 201
 
 
+
+@app.route('/api/v1/users/1/posts', methods=['POST'])
+def post():
+    # Check if the request contains form data
+    if 'photo' not in request.files:
+        return jsonify({"message": "No photo uploaded"}), 400
+
+    photo = request.files['photo']
+    if photo.filename == '':
+        return jsonify({"message": "No selected photo"}), 400
+
+    caption = request.form.get('caption')
+
+
+    # Save photo to uploads folder
+    filename = secure_filename(photo.filename)
+    photo.save(os.path.join('uploads', filename))
+
+    # Create post object
+    post = Posts(caption=caption, photo=filename , user_id=1 )
+
+    # Add user to database
+    db.session.add(post)
+    db.session.commit()
+
+    return jsonify({"message": "Photo uploaded successfully"}), 201
+
+
+
 @app.route('/')
 def index():
     return jsonify(message="This is the beginning of our API")
-
-
-# @app.route('/api/v1/register' , methods=['POST'])
-# def register():
-#     data = request.json  # Access JSON data
-        
-#     # Create a new user instance
-#     new_user = User(
-#         username=data['username'],
-#         password=generate_password_hash(data['password']),
-#         firstname=data['firstname'],
-#         lastname=data['lastname'],
-#         email=data['email'],
-#         location = data['location'],
-#         biography = data['biography'],
-#         phone_number=data.get('phone_number'), 
-#     )
-
-#     #I just added this so I can see what is being commited to the db in the console/terminal
-#     print(new_user)
-    
-#     # Add the new user to the database
-#     db.session.add(new_user)
-#     db.session.commit()
-
-#     return jsonify({'message': 'User created successfully'}), 201
-
-
-
-
-# @app.route('/api/v1/auth/login' , methods=['POST'])
-# def login():
-#     form = LoginForm()
-
-#     if form.validate_on_submit():
-#         # Get the username and password values from the form.
-#         username = form.username.data
-#         password = form.password.data
-
-#         # Using the model, query database for a user based on the username
-#         # and password submitted. Then compare the password hash.
-#         user = User.query.filter_by(username=username).first()
-
-#         if user and check_password_hash(user.password , password):
-            
-#             # Login the user
-#             login_user(user)
-
-#             # # Remember to flash a message to the user
-#             # flash('Login successful!', 'success')
-
-#             # return redirect(url_for('upload'))  # Redirect to the home page
-#         # else:
-#             # Invalid username or password
-#             # flash('Invalid username or password', 'error')
-
-#     return render_template('login.html', form=form)
-
 
 
 

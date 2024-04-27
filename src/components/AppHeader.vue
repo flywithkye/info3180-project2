@@ -25,6 +25,9 @@
               <RouterLink class="nav-link" to="">Explore</RouterLink>
             </li>
             <li class="nav-item">
+              <RouterLink class="nav-link" to="/posts/new">Post Photo</RouterLink>
+            </li>
+            <li class="nav-item">
               <RouterLink class="nav-link" to="/users/id">My Profile</RouterLink>
             </li>
             <li class="nav-item">

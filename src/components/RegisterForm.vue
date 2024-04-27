@@ -16,42 +16,42 @@
                 </div>
 
                 <div class="form-group">
-                <label>Username:</label>
+                <label>Username</label>
                 <input type="text" class="form-control" v-model="formData.username" required><br>
                 </div>
 
                 <div class="form-group">   
-                <label>Password:</label>
+                <label>Password</label>
                 <input type="password" class="form-control" v-model="formData.password" required><br>       
                 </div>
 
                 <div class="form-group"> 
-                <label>First Name:</label>
+                <label>First Name</label>
                 <input type="text" class="form-control" v-model="formData.fname" required><br>         
                 </div>
 
                 <div class="form-group"> 
-                <label>Last Name:</label>
+                <label>Last Name</label>
                 <input type="text" class="form-control" v-model="formData.lname" required><br>         
                 </div>
 
                 <div class="form-group">   
-                <label>Email:</label>
+                <label>Email</label>
                 <input type="email" class="form-control" v-model="formData.email" required><br>       
                 </div>
 
                 <div class="form-group">  
-                <label>Location:</label>
+                <label>Location</label>
                 <input type="text" class="form-control" v-model="formData.location"><br>        
                 </div>
 
                 <div class="form-group">  
-                <label>Bio:</label>
+                <label>Bio</label>
                 <textarea class="form-control" v-model="formData.bio"></textarea><br>        
                 </div>
 
                 <div class="form-group">  
-                <label>Photo:</label>
+                <label>Photo</label>
                 <input type="file" class="form-control" @change="handleFileUpload"><br>        
                 </div>
 
