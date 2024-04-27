@@ -19,7 +19,7 @@
 
                 <div class="form-group">  
                 <label>Caption</label>
-                <textarea class="form-control" v-model="formData.bio"></textarea><br>        
+                <textarea class="form-control" v-model="formData.caption"></textarea><br>        
                 </div>
 
                 <div class="form-group" id="create_formbtndiv"> 
@@ -39,18 +39,41 @@
     import axios from 'axios';
     
     const formData = ref({
-      username: '',
-      password: ''
+      caption: '',
+      userid: '',
+      photo: null
     });
     const error = ref('');
     const success = ref('');
-    
-    const loginUser = async () => {
+
+
+
+
+
+    const createPost = async () => {
       try {
+        const formDataObj = new FormData();
+        for (const key in formData.value) {
+          formDataObj.append(key, formData.value[key]);
+        }
+        const response = await axios.post('http://localhost:8080/api/v1/users/1/posts', formDataObj, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        if (response.data.message === 'the post created successfully') {
+          success.value = response.data.message;
+        } else {
+          error.value = response.data.message;
+        }
       } catch (error) {
-        error.value = 'An error occurred while logging in the user.';
+        error.value = 'An error occurred while uploaading the post.';
       }
     };
+
+
+
     
     const handleFileUpload = (event) => {
       formData.value.photo = event.target.files[0];

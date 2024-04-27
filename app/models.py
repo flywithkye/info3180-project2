@@ -3,6 +3,8 @@ from . import db
 from werkzeug.security import generate_password_hash
 from datetime import datetime
 from flask import url_for
+from sqlalchemy import func
+
 
 class Posts(db.Model):
     # You can use this to change the table name. The default convention is to use
@@ -11,26 +13,25 @@ class Posts(db.Model):
     # to `user_profiles` (plural) or some other name.
     __tablename__ = 'posts'
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     caption = db.Column(db.String(128))
     photo = db.Column(db.String(80))
-    user_id = db.Column(db.Integer, unique=True)
-    created_on = db.Column(db.DateTime)
+    user_id = db.Column(db.Integer, unique=False)
+    created_on = db.Column(db.DateTime, default=db.func.current_timestamp())
 
-    def __init__(self, id, caption, photo, user_id, created_on):
-        self.id = id
+    def __init__(self,caption, photo, user_id):
+        # self.id = id
         self.caption = caption
         self.photo = photo
         self.user_id = user_id
-        self.created_on = created_on
 
     def serialize(self):
         return {
-            "id": self.id,
+            # "id": self.id,
             "caption": self.caption,
             "photo": self.photo, 
             "user_id": self.user_id,
-            "created_on": self.created_on
+            # "created_on": self.created_on
         }
     
     def _repr_(self):
