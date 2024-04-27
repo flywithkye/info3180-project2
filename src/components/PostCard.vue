@@ -7,41 +7,33 @@
         <div id="userdiv">
             <div id="userdivinner1">
                 <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
-                <!-- meant to be like this: <img :src="post.profilepic" class="photo" alt="..."> -->
+                <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
 
-                <p @click="$router.push('user')">useruname</p>
-                <!-- meant to be like this: <p>{{ post.username }}</p> -->
+                <p @click="$router.push('user')" id="username">useruname</p>
+                <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
             </div>
                 
             <div id="userdivinner2">
-                <p id="postdate">April 29, 2024</p>
-                <!-- meant to be like this: <p id="postdate">{{ post.date }}</p> -->
+                <p id="postdate">{{ post.created_on }}</p>
             </div>
         </div>
 
         <div id="postinfo">
             <div id="postphotodiv">
-                <img id="postphoto" alt="..." src="@/assets/nature_pic.jpg">
-                <!-- meant to be like this: <img id="postphoto" :src="post.photo" alt="..."> -->
+                <img id="postphoto" :src="'../uploads/' + post.photo" alt="Post photo">
             </div>
-            <p id="postcaption"> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis 
-                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla 
-                pariatur.
-            </p>   
-            <!-- meant to be like this: <p class="postcaption">{{ post.caption }}</p>  -->
+            <p id="postcaption">{{ post.caption }}</p>
 
             <div id="postdetails">
                 <div id="postlikesdiv">
                     <img alt="Likes Icon" id="postlikesicon" src="@/assets/likes_icon.png"/>
-                    <p id="postlikes"> Likes</p>
+                    <p id="postlikes">[10] Likes</p>
                     <!-- meant to be like this: <p id="postlikes">{{ post.likes }} Likes</p> -->
                 </div>
                 
                 <div id="postsharediv">
                     <img alt="Share Icon" id="postshareicon" src="@/assets/share_icon.png"/>
-                    <p id="postlikes">Share</p>
+                    <p id="postshare">Share</p>
                 </div>
             </div>                            
             
@@ -56,8 +48,10 @@
         border: 0.5px solid #b9babb;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         border-radius: 6px 6px 6px 6px;
-        max-width: 60vw;
+        min-width: 600px;     
+        max-width: 800px;
         position: relative;
+        margin: auto;
         /*margin-left: 50px;*/
     }
 
@@ -80,21 +74,25 @@
         margin: 0px 10px 0px 0px;
     }
 
+    #username{        
+        cursor: pointer;
+    }
+    #username:hover {
+        text-decoration: underline;
+    }
+
     #postinfo {
         margin-top: -15px;
     }
 
     #postphotodiv {
         margin: 0;
-    }
-
-    #postphotodivinner {
-        margin: 0;
+        height: 370px;
     }
 
     #postphoto {
         width: 100%;
-        height: 330px;
+        height: 370px;
         object-fit: cover;
     }
 
@@ -110,19 +108,32 @@
     }
 
     #postlikesdiv{
-        display: flex;
+        display: flex;        
+        cursor: pointer;
     }
-
+    #postlikesdiv:hover #postlikes{
+        color: #b13131;
+    }
+    #postlikes{
+        font-weight: bold;
+    }
     #postlikesicon{        
-        margin: 0px 9px 15px 0px;
+        margin: 0px 4px 15px 0px;
         width: 25px;
         height: 25px;
     }
+    
 
     #postsharediv{
-        display: flex;
+        display: flex;       
+        cursor: pointer;
     }
-
+    #postsharediv:hover #postshare{
+        color: #347d5c;
+    }
+    #postshare{
+        font-weight: bold;
+    }
     #postshareicon{        
         margin: 0px 9px 15px 0px;
         width: 25px;

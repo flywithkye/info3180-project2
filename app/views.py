@@ -221,13 +221,12 @@ def get_all_posts():
             'caption': post.caption,
             'photo': post.photo,
             'user_id': post.user_id,
-            'created_on': post.created_on.strftime("%Y-%m-%d %H:%M:%S")
+            'created_on': post.created_on.strftime("%d %b %Y, %H:%M")
         }
         posts_data.append(post_data)
 
     # Return all posts as JSON response
-    return jsonify(posts_data), 200
-
+    return jsonify(data=posts_data), 200
 
 
 @app.route('/')
