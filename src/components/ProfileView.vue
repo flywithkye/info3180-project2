@@ -155,7 +155,6 @@
   }
 
   #user-posts-name{
-    background-color: aqua;
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;

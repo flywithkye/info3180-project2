@@ -187,6 +187,32 @@ def post():
 
 
 
+@app.route('/api/v1/users/<int:user_id>', methods=['GET'])
+def getuser(user_id):
+    # Fetch all posts for the user with ID user_id
+    user = Users.query.filter_by(id=user_id).first()
+
+    # Prepare response data
+    # posts_data = []
+    # for post in posts:
+    userfound = {
+            'id': user.id,
+            'bio': user.biography,
+            'location': user.location,
+            'firstname': user.firstname,
+            'lastname': user.lastname
+
+        }
+        # posts_data.append(post_data)
+
+    # Return posts as JSON response
+    return jsonify(userfound), 200
+
+
+
+
+
+
 
 @app.route('/api/v1/users/<int:user_id>/posts', methods=['GET'])
 def getpost(user_id):
