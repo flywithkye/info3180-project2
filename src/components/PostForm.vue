@@ -1,31 +1,29 @@
 <template>
-    <div id="login_formdiv">
-
-        <div id="login_headerdiv">
-            <img alt="Camera Icon" id="login_headerpic" src="@/assets/Dcamera_icon.png"/>
-            <h3 id="login_headertxt">Photogram</h3>              
+    <div id="create_formdiv">      
+        <div id="create_headerdiv">
+            <h3 id="login_headertxt">Create Post</h3>              
         </div>
 
-        <div id="login_forminput">
-            <form @submit.prevent="loginUser">          
-                <div id="login_forminfo">
+        <div id="create_forminput">
+            <form @submit.prevent="createPost">          
+                <div id="create_forminfo">
                 <p>
-                  Welcome Back! Ready to return to the world of Photogram? Login now.
+                  Share Your Adventures: Create a post and share your photos with the world.
                 </p>
                 </div>
 
-                <div class="form-group">
-                <label>Username</label>
-                <input type="text" class="form-control" v-model="formData.username" required><br>
+                <div class="form-group">  
+                <label>Photo</label>
+                <input type="file" class="form-control" @change="handleFileUpload"><br>        
                 </div>
 
-                <div class="form-group">   
-                <label>Password</label>
-                <input type="password" class="form-control" v-model="formData.password" required><br>       
+                <div class="form-group">  
+                <label>Caption</label>
+                <textarea class="form-control" v-model="formData.bio"></textarea><br>        
                 </div>
 
-                <div class="form-group" id="login_formbtndiv"> 
-                <button type="submit" class="btn" id="login_formbtn">Login</button>         
+                <div class="form-group" id="create_formbtndiv"> 
+                <button type="submit" class="btn" id="create_formbtn">Create Post</button>         
                 </div>
             </form>
         </div>
@@ -60,7 +58,7 @@
 </script>
 
 <style>
-  #login_formdiv{
+  #create_formdiv{
     display: flex;
     flex-direction: column;
     min-width: 100px;
@@ -72,56 +70,56 @@
     padding: 40px;
   }
 
-  #login_headerdiv{
+  #create_headerdiv{
     display: flex;
     justify-content: center;
     margin: 0px 0px 10px 0px;
   }
 
-  #login_headerpic{
+  #create_headerpic{
     margin: 0px 7px 0px 0px;
     width: 32px;
     height: 32px;
   }
 
-  #login_headertxt{
+  #create_headertxt{
     font-size: 25px;
   }
 
   div label, div input{
-    font-size: 15px;
+    font-size: 16px;
     font-weight: bold;
     color: rgb(55, 55, 55);
     display: block-inline;
   }
   
-  #login_forminput{
+  #create_forminput{
     display: flex;
     justify-content: center;
   }
 
-  #login_forminfo{
+  #create_forminfo{
+    font-size: 20px;
     display: flex;
     flex-direction: column;
     text-align: center;
     margin: 0px 0px 15px 0px;
-    border: 0.4px solid rgb(179, 179, 179);
     border-radius: 4px;
-    padding: 10px 10px 2px 10px;
+    padding: 5px 10px 2px 10px;
   }
 
-  #login_formbtn{
+  #create_formbtn{
     background-color: #3E905C;
     color: #fff;
     width: 100%;
   }
 
-  #login_formbtn:hover {
+  #create_formbtn:hover {
     background-color: #347d5c;
     cursor: pointer;
   }
 
-  #login_formbtndiv{
+  #create_formbtndiv{
     display: flex;
     justify-content: center;
   }
