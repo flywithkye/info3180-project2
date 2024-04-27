@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import PostCard from '../components/PostCard.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +31,7 @@ const router = createRouter({
     {
       path: '/explore',
       name: 'explore',
-      // component: () => import('../views/ExploreView.vue')
+      component: () => import('../views/PostsView.vue')
     },
 
     {

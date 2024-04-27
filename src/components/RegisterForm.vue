@@ -1,6 +1,10 @@
-<template>
-    <div id="regis_formdiv">
+<template>  
+  <div id="displayFeedback">
+    <div id="loginError" v-if="error" class="alert alert-danger" role="alert">{{ error }}</div>
+    <div id="loginSuccess" v-if="success" class="alert alert-success" role="alert">{{ success }}</div>
+  </div>
 
+    <div id="regis_formdiv">
         <div id="regis_headerdiv">
             <img alt="Camera Icon" id="regis_headerpic" src="@/assets/Dcamera_icon.png"/>
             <h3 id="regis_headertxt">Photogram</h3>              
@@ -62,9 +66,6 @@
         </div>
 
     </div>
-
-    <p v-if="error">{{ error }}</p>
-    <p v-if="success">{{ success }}</p>
 </template>
 
 <script setup>
@@ -112,6 +113,13 @@
 </script>
 
 <style>
+  #displayFeedback{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   #regis_formdiv{
     display: flex;
     flex-direction: column;
