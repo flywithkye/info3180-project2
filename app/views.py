@@ -109,6 +109,7 @@ def login():
         # return jsonify({"message": "SUCCESS"}), 200
         return jsonify({"access_token": access_token}), 200
 
+
     except BadRequest as e:
         return jsonify({'message': str(e)}), 400
 
