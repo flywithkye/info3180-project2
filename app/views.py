@@ -50,23 +50,18 @@ def logout():
 def login():
     try:
         username = request.form.get('username')
-        print (username)
+        print(username)
         password = request.form.get('password')
-        tenant_id = request.headers.get('Tenant-ID')  # Extract tenant ID from request headers
 
         if not username or not password:
             raise BadRequest(description='Username or password not provided')
 
         # Find user by username
-        user = Users.query.filter_by(username=username, tenant_id=tenant_id).first()
+        user = Users.query.filter_by(username=username).first()
 
         # If user not found or password doesn't match, return error
         if not user or not check_password_hash(user.password, password):
             return jsonify({'message': 'Invalid username or password'}), 401
-
-        # Check if tenant ID matches
-        if user.tenant_id != tenant_id:
-            return jsonify({'message': 'Invalid tenant ID for this user'}), 401
 
         # Generate JWT token
         # access_token = generate_jwt_token(user)

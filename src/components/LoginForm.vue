@@ -48,15 +48,32 @@
     const success = ref('');
     
     const loginUser = async () => {
-      try {
-      } catch (error) {
-        error.value = 'An error occurred while logging in the user.';
-      }
+        try {
+
+          const formDataObj = new FormData();
+        for (const key in formData.value) {
+          formDataObj.append(key, formData.value[key]);
+        }
+
+            const response = await axios.post('http://localhost:8080/api/v1/auth/login', formDataObj, {
+              headers: {
+            'Content-Type': 'form-data'
+          }
+            });
+
+            // Check if login was successful
+            if (response.status === 200) {
+                success.value = response.data.message;
+                // Redirect or perform any other action after successful login
+            } else {
+                error.value = 'Invalid username or password';
+            }
+        } catch (error) {
+            console.error(error);
+            error.value = 'An error occurred while logging in the user.';
+        }
     };
     
-    const handleFileUpload = (event) => {
-      formData.value.photo = event.target.files[0];
-    };
 </script>
 
 <style>
