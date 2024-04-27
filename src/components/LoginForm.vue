@@ -64,6 +64,9 @@
             // Check if login was successful
             if (response.status === 200) {
                 success.value = response.data.message;
+                console.log(response.data.access_token)
+                localStorage.setItem('access_token', response.data.access_token);
+
                 // Redirect or perform any other action after successful login
             } else {
                 error.value = 'Invalid username or password';
