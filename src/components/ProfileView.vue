@@ -45,6 +45,11 @@
     </div>
 </template>
 
+<script>
+
+
+</script>
+
 <style>
   #userinfopg{
     display: grid;
@@ -123,7 +128,7 @@
   }
 
   #user-stats-inner{
-    background-color: #d53232;
+    /*background-color: #d53232;*/
     display: flex;
     justify-content: space-evenly;
   }
@@ -150,7 +155,7 @@
   }
 
   #posts{
-    background-color: aqua;
+    /*background-color: aqua;*/
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;
@@ -168,9 +173,5 @@
     margin-top: 10%;
     margin-bottom: -3px;
   }
-
-  
-
-
 
 </style>
