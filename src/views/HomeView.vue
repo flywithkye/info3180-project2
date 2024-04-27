@@ -22,8 +22,9 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
             </h5>
             <p>               
               Explore geo-tagged photos from around the world, connect with fellow travelers, 
-              and share adventures. Whether you're a globetrotter or an armchair traveler, 
+              and share adventures. Let others see the world through your lens! Whether you're a globetrotter or an armchair traveler, 
               Photogram invites you to capture the globe, one frame at a time.
+              Connect with the community today!
             </p>
             <div id="homepg_btns">
               <button @click="$router.push('register')" type="button" id="homepg_btn1" class="btn"> Register</button>  
@@ -36,6 +37,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
 </template>
 
 <style>
+
   #homepg_div{
       display: grid;
       gap: 0px 10px;
@@ -47,7 +49,8 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
       border: 0.4px solid rgb(109, 109, 109);
       box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
       border-radius: 2px 2px 2px 2px;
-      height: 450px;
+      min-height: 400px;
+      max-height: 425px;
   }
 
   #homepg_pic{
@@ -62,8 +65,9 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
       border: 0.1px solid #cfcfcf;
       box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
       border-radius: 3px 3px 3px 3px;
-      height: 450px;
       padding: 40px 25px 25px 25px;
+      min-height: 400px;
+      max-height: 425px;
   }
 
   #homepg_btnheader{
@@ -78,7 +82,8 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   }
 
   #homepg_btncontent p {
-    padding: 20px 0px 10px 0px;
+    padding: 0px 0px 20px 0px;
+    text-align: center;
   }
 
   #homepg_btncontent h5 {
@@ -88,13 +93,14 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   #homepg_btns{    
     display: flex;
     justify-content: center;
-    margin: 7% 0px 10px 0px;
+    margin: 20px 0px 10px 0px;
   }
 
   #homepg_btn1{
     background-color: #3E905C;
     color: #fff;
-    width: 150px;
+    margin: 20px 0px auto 0px;
+    width: 100%;
   }
 
   #homepg_btn1:hover {
@@ -105,8 +111,8 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   #homepg_btn2{
     background-color: #493E90;
     color: #fff;
-    margin: 0px 0px 0px 15px;
-    width: 150px;
+    margin: 20px 0px auto 15px;
+    width: 100%;
   }
 
   #homepg_btn2:hover {

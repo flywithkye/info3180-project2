@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import PostCard from '../components/PostCard.vue'
 import ProfileView from '../views/ProfileView.vue'
 
 const router = createRouter({
@@ -31,7 +32,7 @@ const router = createRouter({
     {
       path: '/explore',
       name: 'explore',
-      // component: () => import('../views/ExploreView.vue')
+      component: () => import('../views/PostsView.vue')
     },
   
     {
