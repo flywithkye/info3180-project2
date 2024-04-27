@@ -1,38 +1,61 @@
 <template>
-    <div class="container">
-      <div id="profilepg-div">      
-        <div id="userinfopg">  
-            <div class="box" id="user-info-pic">
-                <img alt="Homepage Nature Pic" id="user-photo" src="@/assets/nature_pic.jpg"/>
-            </div> 
-            <div id="user-info" class="box">
-                <h4 id="user-name">Sheamar White</h4>
-                <p id="user-location">Kingston, Jamaica</p>
-                <p id="user-joined">Member since: January, 2018</p>
-                <p id="user-bio ">This is my bio. Kool.</p>
-            </div> 
-            <div id="user-stats" class="box">
-                <div id="followers">
-                    <span id="user-follow-num">100</span>
-                    <span id="user-followers">Followers</span>
-                </div>
-                <div id="posts">
-                    <span id="user-posts-num">500</span>
-                    <span id="user-posts">Posts</span>
-                </div>
-                <div id="user-buttondiv">
-                    <button id="user-button">Folllow</button>
-                </div>
-            </div>    
+  <div class="container">
+    <div id="profilepg-div">
+      <div id="userinfopg">
+        <div class="box" id="user-info-pic">
+          <img alt="Homepage Nature Pic" id="user-photo" src="@/assets/nature_pic.jpg"/>
         </div>
-        <div id="contentpg">
-            <div id="image-div">
-                <img alt="Homepage Nature Pic" id="image" src="@/assets/nature_pic.jpg"/>
-            </div>
+        <div id="user-info" class="box">
+          <h4 id="user-name">{{ userData.value.firstname }} {{ userData.value.lastname }}</h4>
+          <p id="user-location">{{ userData.value.location }}</p>
+          <p id="user-joined">Member since: January, 2018</p>
+          <p id="user-bio">{{ userData.value.bio }}</p>
         </div>
+        <div id="user-stats" class="box">
+          <div id="followers">
+            <span id="user-follow-num">100</span>
+            <span id="user-followers">Followers</span>
+          </div>
+          <div id="posts">
+            <span id="user-posts-num">500</span>
+            <span id="user-posts">Posts</span>
+          </div>
+          <div id="user-buttondiv">
+            <button id="user-button">Folllow</button>
+          </div>
+        </div>
+      </div>
+      <div id="contentpg">
+        <div id="image-div">
+          <img alt="Homepage Nature Pic" id="image" src="@/assets/nature_pic.jpg"/>
+        </div>
+      </div>
     </div>
-    </div>
+  </div>
 </template>
+
+<script setup>
+import axios from 'axios';
+import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const userData = ref(null);
+const route = useRoute();
+
+async function getUserInfo() {
+  try {
+    const response = await axios.get(`https://localhost:8080/api/users/${route.params.id}`);
+    userData.value = response.data; // Access response data directly
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+getUserInfo(); // Call the function to fetch user data on component mount
+
+</script>
+
+
 
 <style>
   #userinfopg{
