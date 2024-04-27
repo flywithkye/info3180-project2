@@ -119,7 +119,6 @@
 
   div label, div input{
     font-size: 15px;
-    font-weight: bold;
     color: rgb(55, 55, 55);
     display: block-inline;
   }
