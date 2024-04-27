@@ -21,7 +21,7 @@
                     <span id="user-posts">Posts</span>
                 </div>
                 <div id="user-buttondiv">
-                    <button id="user-button">Folllow</button>
+                    <button id="user-button" type="button">Folllow</button>
                 </div>
             </div>    
         </div>
@@ -37,11 +37,11 @@
 <style>
   #userinfopg{
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 25% 50% 25%;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     width: 70vw;
-    height: 30vh;
+    height: 25vh;
     border-radius: 20px;
   }
   
@@ -71,8 +71,8 @@
   #user-photo{
     padding: 5%;
     border-radius: 100%;
-    width: 20vw;
-    height: 30vh;
+    width: 14vw;
+    height: 25vh;
   }
 
   #user-info{
@@ -80,7 +80,7 @@
   }
 
   #user-name{
-    padding-top: 5%;
+    padding-top: 3%;
   }
 
   #user-stats{
@@ -88,18 +88,18 @@
   }
 
   #user-location{
-    padding-top: 10%;
+    padding-top: 3%;
   }
 
   #user-joined{
-    padding-bottom: 5%;
+    margin-top: -15px;
+    padding-bottom: 1%;
   }
 
   #user-stats{
     display: grid;
-    grid-template-areas: 
-    'posts posts followers followers'
-    'button button button button';
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr auto;
   }
 
   #user-buttondiv{
@@ -114,13 +114,26 @@
   #followers{
     display: grid;
     grid-template-rows: auto auto;
-    grid-area: followers;
+    background-color: blue;
   }
 
   #posts{
     display: grid;
     grid-template-rows: auto auto;
-    grid-area: posts;
+    background-color: aqua;
+  }
+
+  #user-posts{
+    margin-top: -5px;
+  }
+
+  #user-follow-num{
+    font-weight: bold;
+  }
+
+  #user-posts-num{
+    font-weight: bold;
+    margin-bottom: -15px;
   }
 
   
