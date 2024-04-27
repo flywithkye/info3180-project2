@@ -6,9 +6,12 @@ This file creates your application.
 """
 
 from app import app, login_manager, db
-from flask import render_template, request, jsonify, send_file, flash, url_for, redirect
+from flask import render_template, request, jsonify, send_file, flash, url_for, redirect, g, send_from_directory
+from functools import wraps
 from flask_login import login_user, logout_user, current_user, login_required
 import os
+import jwt
+from datetime import datetime, timedelta
 from app.forms import LoginForm, RegisterForm
 from app.models import Users
 from app.models import Posts
@@ -16,6 +19,42 @@ from app.models import Posts
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
 from werkzeug.exceptions import BadRequest
+
+
+
+# Create a JWT @requires_auth decorator
+# This decorator can be used to denote that a specific route should check
+# for a valid JWT token before displaying the contents of that route.
+def requires_auth(f):
+  @wraps(f)
+  def decorated(*args, **kwargs):
+    auth = request.headers.get('Authorization', None) # or request.cookies.get('token', None)
+
+    if not auth:
+      return jsonify({'code': 'authorization_header_missing', 'description': 'Authorization header is expected'}), 401
+
+    parts = auth.split()
+
+    if parts[0].lower() != 'bearer':
+      return jsonify({'code': 'invalid_header', 'description': 'Authorization header must start with Bearer'}), 401
+    elif len(parts) == 1:
+      return jsonify({'code': 'invalid_header', 'description': 'Token not found'}), 401
+    elif len(parts) > 2:
+      return jsonify({'code': 'invalid_header', 'description': 'Authorization header must be Bearer + \s + token'}), 401
+
+    token = parts[1]
+    try:
+        payload = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({'code': 'token_expired', 'description': 'token is expired'}), 401
+    except jwt.DecodeError:
+        return jsonify({'code': 'token_invalid_signature', 'description': 'Token signature is invalid'}), 401
+
+    g.current_user = user = payload
+    return f(*args, **kwargs)
+
+  return decorated
 
 
 
@@ -50,28 +89,25 @@ def logout():
 def login():
     try:
         username = request.form.get('username')
-        print (username)
+        print(username)
         password = request.form.get('password')
-        tenant_id = request.headers.get('Tenant-ID')  # Extract tenant ID from request headers
 
         if not username or not password:
             raise BadRequest(description='Username or password not provided')
 
         # Find user by username
-        user = Users.query.filter_by(username=username, tenant_id=tenant_id).first()
+        user = Users.query.filter_by(username=username).first()
 
         # If user not found or password doesn't match, return error
         if not user or not check_password_hash(user.password, password):
             return jsonify({'message': 'Invalid username or password'}), 401
 
-        # Check if tenant ID matches
-        if user.tenant_id != tenant_id:
-            return jsonify({'message': 'Invalid tenant ID for this user'}), 401
-
         # Generate JWT token
-        # access_token = generate_jwt_token(user)
-
-        return jsonify({"message": "Logged in successfully"}), 200
+        access_token = generate_token(user)
+        print (access_token)
+        
+        # return jsonify({"message": "SUCCESS"}), 200
+        return jsonify({"access_token": access_token}), 200
 
     except BadRequest as e:
         return jsonify({'message': str(e)}), 400
@@ -150,12 +186,72 @@ def post():
 
 
 
+
+@app.route('/api/v1/users/<int:user_id>/posts', methods=['GET'])
+def getpost(user_id):
+    # Fetch all posts for the user with ID user_id
+    posts = Posts.query.filter_by(user_id=user_id).all()
+
+    # Prepare response data
+    posts_data = []
+    for post in posts:
+        post_data = {
+            'id': post.id,
+            'caption': post.caption,
+            'photo': post.photo,
+            'created_on': post.created_on.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        posts_data.append(post_data)
+
+    # Return posts as JSON response
+    return jsonify(posts_data), 200
+
+
+
+@app.route('/api/v1/posts', methods=['GET'])
+def get_all_posts():
+    # Fetch all posts from the database
+    all_posts = Posts.query.all()
+
+    # Prepare response data
+    posts_data = []
+    for post in all_posts:
+        post_data = {
+            'id': post.id,
+            'caption': post.caption,
+            'photo': post.photo,
+            'user_id': post.user_id,
+            'created_on': post.created_on.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        posts_data.append(post_data)
+
+    # Return all posts as JSON response
+    return jsonify(posts_data), 200
+
+
+
 @app.route('/')
 def index():
     return jsonify(message="This is the beginning of our API")
 
 
+# @app.route("/api/v1/generate-token")
+def generate_token(user):
+    # Extract user ID from the user object
+    user_id = user.id  # Assuming 'id' is the attribute representing the user ID in the User object
+    username = user.username  # Assuming 'username' is the attribute representing the username
 
+    timestamp = datetime.utcnow()
+    payload = {
+        "sub": user_id,
+        "username": username,
+        "iat": timestamp,
+        "exp": timestamp + timedelta(minutes=30)
+    }
+
+    token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+
+    return token
 
 ###
 # The functions below should be applicable to all Flask apps.
