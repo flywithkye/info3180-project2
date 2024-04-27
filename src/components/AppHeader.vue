@@ -28,7 +28,8 @@
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" :to="{ path: '/users', params: { userId } }">My Profile</RouterLink>
+            <!-- <RouterLink class="nav-link" :to="{ name: 'users', params: { id: userId } }">My Profile</RouterLink> -->
+            
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/login">Login</RouterLink>
@@ -45,20 +46,28 @@
 
 <script setup>
   import { RouterLink } from "vue-router";
-  const userId = ref(null)
+  import { ref, onMounted } from "vue";
+
+  const userId = ref(null);
 
   // Function to extract user ID from token
   function getUserIdFromToken() {
     try {
       // Get the token from local storage
       const token = localStorage.getItem('access_token');
+      console.log('Token from local storage:', token);
+
       if (!token) {
+        console.log('No token found in local storage.');
         return null;
       }
 
       // Split the token by the delimiter (assuming a JWT structure)
       const payloadParts = token.split('.');
+      console.log('Payload parts:', payloadParts);
+
       if (payloadParts.length !== 3) {
+        console.log('Invalid token format.');
         return null;
       }
 
@@ -66,20 +75,27 @@
       const decodedPayload = decodeURIComponent(atob(payloadParts[1]).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
       }).join(''));
+      console.log('Decoded payload:', decodedPayload);
 
       // Parse the decoded payload
       const parsedPayload = JSON.parse(decodedPayload);
+      console.log('Parsed payload:', parsedPayload);
 
       // Extract the user id from the payload based on the provided structure
-      return parsedPayload.sub;
+      const userId = parsedPayload.sub;
+      console.log('Extracted user ID:', userId);
+
+      return userId;
     } catch (error) {
       console.error("Error extracting user id from token:", error);
       return null;
     }
   }
 
-  // Get user ID from token
-  userId.value = getUserIdFromToken();
+  // Initialize userId ref with user ID from token after component is mounted
+  onMounted(() => {
+    userId.value = getUserIdFromToken();
+  });
 </script>
 
 <style>
