@@ -114,12 +114,11 @@
   }
 
   #create_headertxt{
-    font-size: 25px;
+    font-size: 23px;
   }
 
   div label, div input{
     font-size: 16px;
-    font-weight: bold;
     color: rgb(55, 55, 55);
     display: block-inline;
   }

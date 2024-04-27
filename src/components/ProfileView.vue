@@ -13,13 +13,13 @@
             </div> 
             <div id="user-stats" class="box">
                 <div id="user-stats-inner">
-                  <div id="followers">
+                  <div id="user-followers">
                       <p id="user-follow-num">100</p>
-                      <p id="user-followers">Followers</p>
+                      <p id="user-followers-name">Followers</p>
                   </div>
-                  <div id="posts">
+                  <div id="user-posts">
                       <p id="user-posts-num">500</p>
-                      <p id="user-posts">Posts</p>
+                      <p id="user-posts-name">Posts</p>
                   </div>
                 </div>
                 <div id="user-buttondiv">
@@ -128,7 +128,7 @@
   }
 
   #user-stats-inner{
-    /*background-color: #d53232;*/
+    background-color: #d53232;
     display: flex;
     justify-content: space-evenly;
   }
@@ -148,14 +148,14 @@
     color: white;
   }
 
-  #followers{
+  #user-followers-name{
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;
   }
 
-  #posts{
-    /*background-color: aqua;*/
+  #user-posts-name{
+    background-color: aqua;
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;
