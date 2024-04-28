@@ -1,14 +1,14 @@
 <script setup>
     import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
+    import { onMounted, ref } from 'vue';
+    import { useRoute } from 'vue-router';
+    import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
 
-const props = defineProps(['post']);
-    console.log('User ID:', props.post.user_id);
-const userData = ref({});
-const likes = ref()
-const route = useRoute();
+    const props = defineProps(['post']);
+        console.log('User ID:', props.post.user_id);
+    const userData = ref({});
+    const likes = ref()
+    const route = useRoute();
 
 async function getUserInfo() {
   try {
@@ -23,16 +23,15 @@ async function getUserInfo() {
   }
 }
 
-async function countLikes(){
+    async function countLikes(){
 
-}
+    }
 
-onMounted(() => {
-  getUserInfo();
-});
-
-
+    onMounted(() => {
+        getUserInfo();
+    });
 </script>
+
 
 <template>
     <div class="post">
@@ -40,16 +39,11 @@ onMounted(() => {
             <div id="userdivinner1">
                 <!-- <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg"> -->
                 <img
-    alt="User Profile Picture"
-    id="userphoto"
-    :src="'../uploads/' + userData.profile_photo"
-/>
-
-                <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
-
-                <!-- <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p> -->
-                <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ userData.username }}</router-link> </p>
-                <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
+                    alt="User Profile Picture"
+                    id="userphoto"
+                    :src="'../uploads/' + userData.profile_photo" 
+                />
+                <p id="username"> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ userData.username }}</router-link> </p>
             </div>
                 
             <div id="userdivinner2">
