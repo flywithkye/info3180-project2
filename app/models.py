@@ -40,18 +40,18 @@ class Posts(db.Model):
 class Likes(db.Model):
     __tablename__ = 'likes'
 
-    id = db.Column(db.Integer, primary_key=True)
-    post_id = db.Column(db.Integer, unique=True)
-    user_id = db.Column(db.Integer, unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    post_id = db.Column(db.Integer, unique=False)
+    user_id = db.Column(db.Integer, unique=False)
 
-    def __init__(self, id, post_id, user_id):
-        self.id = id
+    def __init__(self, post_id, user_id):
+        # self.id = id
         self.post_id = post_id
         self.user_id = user_id
 
     def serialize(self):
         return {
-            "id": self.id,
+            # "id": self.id,
             "post_id": self.post_id,
             "user_id": self.user_id,
         }

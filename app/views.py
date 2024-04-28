@@ -238,19 +238,42 @@ def getpost(user_id):
     # Return posts as JSON response
     return jsonify(posts_data), 200
 
-@app.route('/api/v1/posts/<int:post_id>/like', methods=['POST'])
-def postlike(post_id):
 
+
+
+@app.route('/api/v1/posts/<int:post_id>/likes_count', methods=['GET'])
+def get_likes_count(post_id):
+    # Fetch all likes for the post with ID post_id
+    post_likes_count = Likes.query.filter_by(post_id=post_id).count()
+
+    # Return the count as JSON response
+    return jsonify({'likes_count': post_likes_count}), 200
+
+
+
+
+@app.route('/api/v1/posts/<int:post_id>/like', methods=['POST'])
+def post_like(post_id):
     user_id = request.headers.get('user_id')
 
-    # Create like object
-    like = Likes(post_id=post_id, user_id=user_id )
+    # Check if the user has already liked the post
+    existing_like = Likes.query.filter_by(post_id=post_id, user_id=user_id).first()
 
-    # Add like to database
-    db.session.add(like)
-    db.session.commit()
+    if existing_like:
+        # If the user has already liked the post, delete the like
+        db.session.delete(existing_like)
+        db.session.commit()
+        return jsonify({"message": "Like removed"}), 200
+    else:
+        # Create like object
+        like = Likes(post_id=post_id, user_id=user_id)
+        # Add like to database
+        db.session.add(like)
+        db.session.commit()
+        return jsonify({"message": "Liked"}), 201
 
-    return jsonify({"message": "Liked"}), 201
+
+
 
 @app.route('/api/v1/posts', methods=['GET'])
 def get_all_posts():
