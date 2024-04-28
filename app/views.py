@@ -202,7 +202,9 @@ def getuser(user_id):
             'location': user.location,
             'firstname': user.firstname,
             'lastname': user.lastname,
-            'username': user.username
+            'username': user.username,
+            'joined_on' : user.joined_on,
+            'profile_photo' : user.profile_photo
 
 
         }

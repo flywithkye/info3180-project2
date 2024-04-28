@@ -38,7 +38,13 @@ onMounted(() => {
     <div class="post">
         <div id="userdiv">
             <div id="userdivinner1">
-                <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
+                <!-- <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg"> -->
+                <img
+    alt="User Profile Picture"
+    id="userphoto"
+    :src="'../uploads/' + userData.profile_photo"
+/>
+
                 <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
 
                 <!-- <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p> -->

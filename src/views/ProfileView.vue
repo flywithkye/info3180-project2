@@ -3,16 +3,16 @@
     <div id="profilepg-div">
       <div id="userinfopg">
         <div class="box" id="user-info-pic">
-        <img
-            alt="User Profile Picture"
-            id="user-photo"
-            :src="userData.profile_photo || '../uploads/house1.jpg'" 
-          />
+          <img
+    alt="User Profile Picture"
+    id="user-photo"
+    :src="'../uploads/' + userData.profile_photo"
+/>
         </div>
         <div id="user-info" class="box">
           <h4 id="user-name">{{ userData.firstname }} {{ userData.lastname }}</h4>
           <p id="user-location">{{ userData.location }}</p>
-          <p id="user-joined">Member since: January, 2018</p>
+          <p id="user-joined">{{userData.joined_on}}</p>
           <p id="user-bio">{{ userData.bio }}</p>
         </div>
         <div id="user-stats" class="box">
