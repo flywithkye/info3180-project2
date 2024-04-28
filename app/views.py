@@ -279,6 +279,7 @@ def generate_token(user):
 
     return token
 
+
 ###
 # The functions below should be applicable to all Flask apps.
 ###
