@@ -57,7 +57,7 @@
         for (const key in formData.value) {
           formDataObj.append(key, formData.value[key]);
         }
-        const response = await axios.post('http://localhost:8080/api/v1/users/1/posts', formDataObj, {
+        const response = await axios.post('http://localhost:8080/api/v1/users/16/posts', formDataObj, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

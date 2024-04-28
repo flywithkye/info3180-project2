@@ -52,9 +52,10 @@ const route = useRoute();
 
 async function getUserInfo() {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/users/1`);
+    const response = await axios.get(`http://localhost:8080/api/v1/users/${route.params.id}`);
     userData.value = response.data;
-    console.log("Profile view user data");
+    console.log("Profile view user data", userData.value);
+
   } catch (error) {
     console.log("This is error")
     console.error("Error:", error);

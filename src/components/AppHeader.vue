@@ -2,7 +2,7 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #3E905C;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="/explore">
         <img alt="Camera Icon" class="logo" id="header_icon" src="@/assets/Lcamera_icon.png" />
         Photogram</a>
       <button
@@ -29,6 +29,7 @@
           </li>
           <li class="nav-item">
             <!-- <RouterLink class="nav-link" :to="{ name: 'users', params: { id: userId } }">My Profile</RouterLink> -->
+            <router-link class="nav-link" :to="{ name: 'users', params: { id: userId } }"> My Profile</router-link>
             
           </li>
           <li class="nav-item">
