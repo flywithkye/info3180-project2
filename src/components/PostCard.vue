@@ -2,34 +2,74 @@
     import axios from 'axios';
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
-    import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
 
     const props = defineProps(['post']);
-        console.log('User ID:', props.post.user_id);
+    console.log('User ID:', props.post.user_id);
     const userData = ref({});
-    const likes = ref()
+    const likesCount = ref(null);
     const route = useRoute();
 
-async function getUserInfo() {
-  try {
-    const response = await axios.get(`http://localhost:8080/api/v1/users/${props.post.user_id}`);
-    userData.value = response.data;
-    console.log("Post Card User Data", userData.value);
+    async function getUserInfo() {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/v1/users/${props.post.user_id}`);
+            userData.value = response.data;
+            console.log("Post Card User Data", userData.value);
 
-  } catch (error) {
-    console.log("This is error")
-    console.error("Error:", error);
-    // Handle error and display user-friendly message
-  }
-}
-
-    async function countLikes(){
-
+        } catch (error) {
+            console.log("This is error")
+            console.error("Error:", error);
+            // Handle error and display user-friendly message
+        }
     }
+
+
+
+    async function getLikesForPost() {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/posts/${props.post.id}/likes_count
+    `);
+        likesCount.value = response.data.likes_count;
+
+        console.log("Likes Count is", likesCount.value);
+
+    } catch (error) {
+        console.log("This is error")
+        console.error("Error:", error);
+        // Handle error and display user-friendly message
+    }
+    }
+
+
+
+
+    async function likePost() {
+        try {
+            const config = {
+            headers: {
+                'user-id': props.post.user_id // Assuming `post` is accessible here
+            }
+            };
+
+            const response = await axios.post(`http://localhost:8080/api/v1/posts/${props.post.id}/like`, null, config);
+            
+            // userData.value = response.data;
+            console.log("Likes Message", response.data);
+        } catch (error) {
+            console.log("This is error");
+            console.error("Error:", error);
+            // Handle error and display user-friendly message
+        }
+        getLikesForPost();
+    }
+
+
 
     onMounted(() => {
         getUserInfo();
+        getLikesForPost();
     });
+
+    
 </script>
 
 
@@ -59,8 +99,10 @@ async function getUserInfo() {
 
             <div id="postdetails">
                 <div id="postlikesdiv">
-                    <img alt="Likes Icon" id="postlikesicon" src="@/assets/likes_icon.png"/>
-                    <p id="postlikes">[10] Likes</p>
+                    <img @click="likePost" alt="Likes Icon" id="postlikesicon" src="@/assets/likes_icon.png"/>
+                    <p id="postlikes">{{likesCount}} Likes</p>
+                    <!-- <p v-else id="postlikes">0 Likes</p> -->
+
                     <!-- meant to be like this: <p id="postlikes">{{ post.likes }} Likes</p> -->
                 </div>
                 
