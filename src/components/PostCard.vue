@@ -9,7 +9,7 @@
                 <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
                 <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
 
-                <p @click="$router.push('user')" id="username">useruname</p>
+                <p @click="$router.push('/users/:id')" id="username">useruname</p>
                 <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
             </div>
                 

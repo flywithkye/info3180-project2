@@ -190,6 +190,7 @@ def post():
 @app.route('/api/v1/users/<int:user_id>', methods=['GET'])
 def getuser(user_id):
     # Fetch all posts for the user with ID user_id
+    print(user_id)
     user = Users.query.filter_by(id=user_id).first()
 
     # Prepare response data
