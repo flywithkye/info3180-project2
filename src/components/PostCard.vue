@@ -1,24 +1,30 @@
 <script setup>
     import axios from 'axios';
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
 
 const props = defineProps(['post']);
+    console.log('User ID:', props.post.user_id);
 const userData = ref({});
+const likes = ref()
 const route = useRoute();
 
 async function getUserInfo() {
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/users/${post.user_id}`);
+    const response = await axios.get(`http://localhost:8080/api/v1/users/${props.post.user_id}`);
     userData.value = response.data;
-    console.log("Profile view user data", userData.value);
+    console.log("Post Card User Data", userData.value);
 
   } catch (error) {
     console.log("This is error")
     console.error("Error:", error);
     // Handle error and display user-friendly message
   }
+}
+
+async function countLikes(){
+
 }
 
 onMounted(() => {
@@ -35,7 +41,7 @@ onMounted(() => {
                 <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
                 <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
 
-                <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p>
+                <!-- <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p> -->
                 <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ userData.username }}</router-link> </p>
                 <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
             </div>

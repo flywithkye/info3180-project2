@@ -15,6 +15,7 @@ from datetime import datetime, timedelta
 from app.forms import LoginForm, RegisterForm
 from app.models import Users
 from app.models import Posts
+from app.models import Likes
 
 from werkzeug.utils import secure_filename
 from werkzeug.security import check_password_hash
@@ -200,7 +201,9 @@ def getuser(user_id):
             'bio': user.biography,
             'location': user.location,
             'firstname': user.firstname,
-            'lastname': user.lastname
+            'lastname': user.lastname,
+            'username': user.username
+
 
         }
         # posts_data.append(post_data)
@@ -233,7 +236,19 @@ def getpost(user_id):
     # Return posts as JSON response
     return jsonify(posts_data), 200
 
+@app.route('/api/v1/posts/<int:post_id>/like', methods=['POST'])
+def postlike(post_id):
 
+    user_id = request.headers.get('user_id')
+
+    # Create like object
+    like = Likes(post_id=post_id, user_id=user_id )
+
+    # Add like to database
+    db.session.add(like)
+    db.session.commit()
+
+    return jsonify({"message": "Liked"}), 201
 
 @app.route('/api/v1/posts', methods=['GET'])
 def get_all_posts():
