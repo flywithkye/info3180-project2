@@ -1,80 +1,43 @@
 <script setup>
-    import axios from 'axios';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
+    const props = defineProps(['post']);
 
-const props = defineProps(['post']);
-    console.log('User ID:', props.post.user_id);
-const userData = ref({});
-const likes = ref()
-const route = useRoute();
-
-async function getUserInfo() {
-  try {
-    const response = await axios.get(`http://localhost:8080/api/v1/users/${props.post.user_id}`);
-    userData.value = response.data;
-    console.log("Post Card User Data", userData.value);
-
-  } catch (error) {
-    console.log("This is error")
-    console.error("Error:", error);
-    // Handle error and display user-friendly message
-  }
-}
-
-async function countLikes(){
-
-}
-
-onMounted(() => {
-  getUserInfo();
-});
-
-
+    
 </script>
 
 <template>
     <div class="post">
-        <div id="userdiv">
+        <!-- <div id="userdiv">
             <div id="userdivinner1">
-                <!-- <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg"> -->
-                <img
-    alt="User Profile Picture"
-    id="userphoto"
-    :src="'../uploads/' + userData.profile_photo"
-/>
+                <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
+                meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture">
 
-                <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
-
-                <!-- <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p> -->
-                <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ userData.username }}</router-link> </p>
-                <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
+                <p> <router-link class="nav-link" :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p>
+                meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> 
             </div>
                 
             <div id="userdivinner2">
                 <p id="postdate">{{ post.created_on }}</p>
             </div>
-        </div>
+        </div> -->
 
         <div id="postinfo">
             <div id="postphotodiv">
                 <img id="postphoto" :src="'../uploads/' + post.photo" alt="Post photo">
             </div>
-            <p id="postcaption">{{ post.caption }}</p>
+            <!-- <p id="postcaption">{{ post.caption }}</p>
 
             <div id="postdetails">
                 <div id="postlikesdiv">
                     <img alt="Likes Icon" id="postlikesicon" src="@/assets/likes_icon.png"/>
                     <p id="postlikes">[10] Likes</p>
-                    <!-- meant to be like this: <p id="postlikes">{{ post.likes }} Likes</p> -->
+                     meant to be like this: <p id="postlikes">{{ post.likes }} Likes</p>
                 </div>
                 
                 <div id="postsharediv">
                     <img alt="Share Icon" id="postshareicon" src="@/assets/share_icon.png"/>
                     <p id="postshare">Share</p>
                 </div>
-            </div>                            
+            </div>                             -->
             
         </div>     
     </div>

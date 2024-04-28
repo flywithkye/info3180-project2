@@ -3,16 +3,16 @@
     <div id="profilepg-div">
       <div id="userinfopg">
         <div class="box" id="user-info-pic">
-        <img
-            alt="User Profile Picture"
-            id="user-photo"
-            :src="userData.profile_photo || '../uploads/house1.jpg'" 
-          />
+          <img
+    alt="User Profile Picture"
+    id="user-photo"
+    :src="'../uploads/' + userData.profile_photo"
+/>
         </div>
         <div id="user-info" class="box">
           <h4 id="user-name">{{ userData.firstname }} {{ userData.lastname }}</h4>
           <p id="user-location">{{ userData.location }}</p>
-          <p id="user-joined">Member since: January, 2018</p>
+          <p id="user-joined">{{userData.joined_on}}</p>
           <p id="user-bio">{{ userData.bio }}</p>
         </div>
         <div id="user-stats" class="box">
@@ -32,11 +32,12 @@
         </div>
       </div>
       <div id="contentpg">
-        <div v-for="post in userData.value?.posts || []" :key="post.id" id="post-card">
-          <img :src="post.imageUrl" alt="User Post" />
-          <p>{{ post.caption }}</p>
-          </div>
-        <p v-if="!userData.value?.posts?.length">No posts yet.</p>
+        <div v-if="!userPosts.value?.(userData.id).length < 1">
+          <p>No posts yet.</p>
+        </div>
+        <div id="posts" v-else>
+          <ProfileViewPostCard :post="post" v-for="post in userPosts" :key="post.id" />
+        </div>
       </div>
     </div>
   </div>
@@ -46,8 +47,10 @@
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
 
 const userData = ref({});
+const userPosts = ref({})
 const route = useRoute();
 
 async function getUserInfo() {
@@ -63,8 +66,22 @@ async function getUserInfo() {
   }
 }
 
+async function getUserPosts() {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/v1/users/${route.params.id}/posts`);
+    userPosts.value = response.data;
+    console.log("Profile view user posts", userPosts.value);
+
+  } catch (error) {
+    console.log("This is error")
+    console.error("Error:", error);
+    // Handle error and display user-friendly message
+  }
+}
+
 onMounted(() => {
   getUserInfo();
+  getUserPosts();
 });
 
 
