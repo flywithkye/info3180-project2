@@ -176,7 +176,7 @@ def post():
     photo.save(os.path.join('uploads', filename))
 
     # Create post object
-    post = Posts(caption=caption, photo=filename , user_id=1)
+    post = Posts(caption=caption, photo=filename , user_id=1g)
 
     # Add user to database
     db.session.add(post)
