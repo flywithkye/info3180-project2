@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="form-group" id="regis_formbtndiv"> 
-                <button type="submit" class="btn" id="regis_formbtn">Register</button>         
+                <button type="submit" class="btn" id="regis_formbtn" @click="redirectToPage">Register</button>         
                 </div>
             </form>
         </div>
@@ -71,6 +71,7 @@
 <script setup>
     import { ref } from 'vue';
     import axios from 'axios';
+import { routerKey } from 'vue-router';
     
     const formData = ref({
       username: '',

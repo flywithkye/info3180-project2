@@ -39,8 +39,9 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import axios from 'axios';
+import { routerKey, useRouter } from 'vue-router';
     
     const formData = ref({
       username: '',
@@ -68,7 +69,6 @@
                 success.value = response.data.message;
                 console.log(response.data.access_token)
                 localStorage.setItem('access_token', response.data.access_token);
-
                 // Redirect or perform any other action after successful login
                 window.location.href = '/explore';
             } else {
@@ -79,7 +79,7 @@
             error.value = 'An error occurred while logging in the user.';
         }
     };
-    
+
 </script>
 
 <style>  

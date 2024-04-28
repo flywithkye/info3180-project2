@@ -109,6 +109,7 @@ def login():
         # return jsonify({"message": "SUCCESS"}), 200
         return jsonify({"access_token": access_token}), 200
 
+
     except BadRequest as e:
         return jsonify({'message': str(e)}), 400
 
@@ -176,7 +177,7 @@ def post():
     photo.save(os.path.join('uploads', filename))
 
     # Create post object
-    post = Posts(caption=caption, photo=filename , user_id=1g)
+    post = Posts(caption=caption, photo=filename , user_id=1)
 
     # Add user to database
     db.session.add(post)
@@ -189,6 +190,7 @@ def post():
 @app.route('/api/v1/users/<int:user_id>', methods=['GET'])
 def getuser(user_id):
     # Fetch all posts for the user with ID user_id
+    print(user_id)
     user = Users.query.filter_by(id=user_id).first()
 
     # Prepare response data
