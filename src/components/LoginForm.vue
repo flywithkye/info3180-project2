@@ -70,6 +70,7 @@
                 localStorage.setItem('access_token', response.data.access_token);
 
                 // Redirect or perform any other action after successful login
+                window.location.href = '/explore';
             } else {
                 error.value = 'Invalid username or password';
             }
