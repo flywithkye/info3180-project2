@@ -159,8 +159,8 @@ def register():
 
 
 
-@app.route('/api/v1/users/1/posts', methods=['POST'])
-def post():
+@app.route('/api/v1/users/<int:user_id>/posts', methods=['POST'])
+def post(user_id):
     # Check if the request contains form data
     if 'photo' not in request.files:
         return jsonify({"message": "No photo uploaded"}), 400
@@ -177,7 +177,7 @@ def post():
     photo.save(os.path.join('uploads', filename))
 
     # Create post object
-    post = Posts(caption=caption, photo=filename , user_id=1 )
+    post = Posts(caption=caption, photo=filename , user_id=user_id )
 
     # Add user to database
     db.session.add(post)
@@ -190,7 +190,6 @@ def post():
 @app.route('/api/v1/users/<int:user_id>', methods=['GET'])
 def getuser(user_id):
     # Fetch all posts for the user with ID user_id
-    print(user_id)
     user = Users.query.filter_by(id=user_id).first()
 
     # Prepare response data

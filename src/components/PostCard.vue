@@ -9,7 +9,7 @@
                 <img id="userphoto" alt="..." src="@/assets/nature_pic.jpg">
                 <!-- meant to be like this: <img :src="'../uploads/' + post.profilepic" alt="Profile picture"> -->
 
-                <p @click="$router.push('/users/:id')" id="username">useruname</p>
+                <p> <router-link :to="{ name: 'users', params: { id: post.user_id } }">{{ post.user_id }}</router-link> </p>
                 <!-- meant to be like this: <p @click="$router.push('user')>{{ post.username }}</p> -->
             </div>
                 
