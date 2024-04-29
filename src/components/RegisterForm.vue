@@ -131,6 +131,7 @@ import { routerKey } from 'vue-router';
     box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
     border-radius: 4px;
     padding: 40px;
+    background: rgba(255, 255, 255, 0.817);
   }
 
   #regis_headerdiv{
@@ -168,6 +169,7 @@ import { routerKey } from 'vue-router';
     border: 0.4px solid rgb(179, 179, 179);
     border-radius: 4px;
     padding: 10px 10px 2px 10px;
+    background: rgba(255, 255, 255, 0.228);
   }
 
   #regis_formbtn{

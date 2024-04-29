@@ -116,10 +116,10 @@
     </div>
 </template>
   
-<style>
+<style scoped>
     /* Add any component specific styles here */
     .post {    
-        background: white;
+        background: rgba(255, 255, 255, 0.817);
         border: 0.5px solid #b9babb;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         border-radius: 6px 6px 6px 6px;
@@ -172,7 +172,7 @@
     }
 
     #postcaption{
-        padding: 10px 12px 10px 12px;
+        padding: 10px 21px 10px 21px;
     }
 
     #postdetails{    

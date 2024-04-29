@@ -1,15 +1,10 @@
 <script setup>
-import { ref } from "vue";
-
-let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
-
 </script>
 
 <template>
     <div class="container">
       <div id="homepg_div">      
         <div id="homepg_picdiv">          
-          <img alt="Homepage Nature Pic" id="homepg_pic" src="@/assets/nature_pic.jpg"/>
         </div>
         <div id="homepg_btndiv">
           <div id="homepg_btnheader">
@@ -32,11 +27,16 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
             </div>     
           </div>  
         </div>
-    </div>
+      </div>
     </div>
 </template>
 
 <style>
+  body{
+    background-image: url('@/assets/greenwave.png');
+    /*<a href="http://www.freepik.com">Designed by Kotkoa / Freepik</a> */
+    background-size: 50%;
+  }
 
   #homepg_div{
       display: grid;
@@ -49,13 +49,14 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
       border: 0.4px solid rgb(109, 109, 109);
       box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
       border-radius: 2px 2px 2px 2px;
-      min-height: 400px;
-      max-height: 425px;
+      background: url('@/assets/nature2_pic.jpg') no-repeat;
+      background-size: cover;
   }
 
   #homepg_pic{
       width: 100%;
-      height: 100%;
+      min-height: 430px;
+      max-height: 110%;
       object-fit: cover;
       border-radius: 1px 1px 1px 1px;
   }
@@ -66,8 +67,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
       box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
       border-radius: 3px 3px 3px 3px;
       padding: 40px 25px 25px 25px;
-      min-height: 400px;
-      max-height: 425px;
+      background: rgba(255, 255, 255, 0.817);
   }
 
   #homepg_btnheader{
@@ -99,7 +99,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   #homepg_btn1{
     background-color: #3E905C;
     color: #fff;
-    margin: 20px 0px auto 0px;
+    margin: 20px 0px 0px 0px;
     width: 100%;
   }
 
@@ -111,7 +111,7 @@ let message = ref("Hello World! This is a VueJS and Flask Starter Template.")
   #homepg_btn2{
     background-color: #493E90;
     color: #fff;
-    margin: 20px 0px auto 15px;
+    margin: 20px 0px 0px 15px;
     width: 100%;
   }
 

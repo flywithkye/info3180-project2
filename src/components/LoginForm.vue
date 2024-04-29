@@ -13,9 +13,9 @@
         <div id="login_forminput">
             <form @submit.prevent="loginUser">          
                 <div id="login_forminfo">
-                <p>
-                  Welcome Back! Ready to return to the world of Photogram? Login now.
-                </p>
+                  <p>
+                    Welcome Back! Ready to return to the world of Photogram? Login now.
+                  </p>
                 </div>
 
                 <div class="form-group">
@@ -41,7 +41,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
     import axios from 'axios';
-import { routerKey, useRouter } from 'vue-router';
+  import { routerKey, useRouter } from 'vue-router';
     
     const formData = ref({
       username: '',
@@ -100,6 +100,7 @@ import { routerKey, useRouter } from 'vue-router';
     box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
     border-radius: 4px;
     padding: 40px;
+    background: rgba(255, 255, 255, 0.817);
   }
 
   #login_headerdiv{
@@ -123,7 +124,7 @@ import { routerKey, useRouter } from 'vue-router';
     color: rgb(55, 55, 55);
     display: block-inline;
   }
-  
+
   #login_forminput{
     display: flex;
     justify-content: center;
@@ -137,6 +138,7 @@ import { routerKey, useRouter } from 'vue-router';
     border: 0.4px solid rgb(179, 179, 179);
     border-radius: 4px;
     padding: 10px 10px 2px 10px;
+    background: rgba(255, 255, 255, 0.228);
   }
 
   #login_formbtn{

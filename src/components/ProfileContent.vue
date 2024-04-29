@@ -5,7 +5,7 @@
     import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
 
     const userData = ref({});
-    const userPosts = ref({})
+    const userPosts = ref({});
     const route = useRoute();
 
     async function getUserInfo() {
@@ -26,12 +26,17 @@
         const response = await axios.get(`http://localhost:8080/api/v1/users/${route.params.id}/posts`);
         userPosts.value = response.data;
         console.log("Profile view user posts", userPosts.value);
+        console.log(Object.keys(userPosts.value).length);
 
     } catch (error) {
         console.log("This is error")
         console.error("Error:", error);
         // Handle error and display user-friendly message
     }
+    }
+
+    function isObjectEmpty(objectName) {
+        return Object.keys(objectName).length === 0;
     }
 
     onMounted(() => {
@@ -51,20 +56,20 @@
             :src="'../uploads/' + userData.profile_photo" />
         </div>
         <div id="user-info">
-          <h4 id="user-name">{{ userData.firstname }} {{ userData.lastname }}</h4>
+          <h1 id="user-name">{{ userData.firstname }} {{ userData.lastname }}</h1>
           <p id="user-location">{{ userData.location }}</p>
-          <p id="user-joined">{{userData.joined_on}}</p>
+          <p id="user-joined">Member since {{userData.joined_on}}</p>
           <p id="user-bio">{{ userData.bio }}</p>
         </div>
         <div id="user-stats">
           <div id="user-stats-inner">
-            <div id="followers">
+            <div id="user-followers-div">
               <p id="user-follow-num">{{ userData.value?.followers?.length || 0 }}</p>
-              <p id="user-followers">Followers</p>
+              <p id="user-followers-name">Followers</p>
             </div>
-            <div id="posts">
+            <div id="user-posts-div">
               <p id="user-posts-num">{{ userData.value?.posts?.length || 0 }}</p>
-              <p id="user-posts">Posts</p>
+              <p id="user-posts-name">Posts</p>
             </div>
           </div>
           <div id="user-buttondiv">
@@ -73,27 +78,29 @@
         </div>
       </div>
       <div id="contentpg">
-        <div v-if="!userPosts.value?.(userData.id).length < 1">
-          <p>No posts yet.</p>
-        </div>
-        <div id="posts" v-else>
+        <div id="posts"  v-if="!isObjectEmpty(userPosts)">
           <ProfileViewPostCard :post="post" v-for="post in userPosts" :key="post.id" />
+        </div>
+        <div id="postnotif" v-else>
+          <p>No posts from {{ userData.firstname }} yet.</p>
         </div>
       </div>
     </div>
 </template>
 
 
-<style>
+<style scoped>
   #userinfopg{
     display: grid;
-    grid-template-columns: minmax(28%, 28%) minmax(40%, 40%) minmax(30%, 30%);
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
+    grid-template-columns: minmax(0, 210px) minmax(0, 650px) minmax(0, 250px);
+    background: rgba(255, 255, 255, 0.817);
     width: 100%;
-    min-height: 25vh;
-    border-radius: 10px;
+    min-height: 29vh;
     margin-bottom: 3%;
+    border: 0.5px solid #b9babb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border-radius: 6px 6px 6px 6px;
+    padding: 10px 20px 10px 20px;
   }
   
   #profilepg-div{
@@ -103,62 +110,58 @@
     padding: 35px 20px 20px 20px;
   }
 
-  #contentpg{
-    display: grid;
-    gap: 30px 20px;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-    padding: 3%;
-    border: 0.6px solid #b6b5b5;
-    width: 100%;
-    border-radius: 10px;
-  }
- 
-  .post-image{
-    object-fit: cover;
-    height: 230px;
-    width: 100%;
-  }
-
-  #post-card{
-    border: 0.5px solid #ccc;
-  }
-
   #user-photo{
     border-radius: 100%;
     object-fit: cover;
-    height: 25vh;
-    width: 15vw;
+    height: 175px;
+    width: 95%;
   }
   
   #user-info-pic{
-    padding: 5%;
+    padding: 5px 10% 5px 0;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   #user-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     text-align: left;
   }
 
   #user-name{
     padding-top: 3%;
+    font-weight: bold;
+    font-size: 21px;
+    color: #3F3E3E;
   }
 
   #user-location{
-    padding-top: 3%;
+    padding-top: 1%;
+    color: #3F3E3E;
   }
 
   #user-joined{
     margin-top: -15px;
-    padding-bottom: 1%;
+    margin-bottom: 0px;
+    color: #3F3E3E;
   }
+
+  #user-bio{
+    margin-top: 6px;
+    color: #3F3E3E;
+  }
+
 
   #user-stats{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-right: 2%;  
+    margin-right: 2%; 
+    font-size: 18px; 
+    padding: 5px 5px 5px 5px;
   }
 
   #user-stats-inner{
@@ -186,29 +189,62 @@
     cursor: pointer;
   }
 
+  #user-followers-div {
+    font-weight: bold;
+    color: #3F3E3E;
+  }
+  #user-posts-div{
+    font-weight: bold;
+    color: #3F3E3E;
+  }
+
   #user-followers-name{
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;
+    font-weight: normal;
+  }
+
+  #user-follow-num{
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: -3px;
   }
 
   #user-posts-name{
     width: 100%;
     text-align: center;
     padding: 1% 1% 0.5% 1%;
-  }
-
-
-  #user-follow-num{
-    font-weight: bold;
-    margin-top: 10%;
-    margin-bottom: -3px;
+    font-weight: normal;
   }
 
   #user-posts-num{
-    font-weight: bold;
-    margin-top: 10%;
+    margin-top: 15px;
+    text-align: center;
     margin-bottom: -3px;
+    color: #3F3E3E;
+  }
+
+
+  #contentpg{
+    width: 100%;
+    border-radius: 3px;
+    padding: 25px 25px 25px 25px;
+    margin-top: 5px;
+    background: rgba(255, 255, 255, 0.817);
+    border: 0.5px solid #b9babb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+
+  #posts {
+    display: grid;
+    gap: 33px 21px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);  
+  }
+
+  #postnotif {
+    text-align: center;
+    margin-bottom: -10px;
   }
 
 </style>

@@ -165,6 +165,7 @@ onMounted(() => {
   box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
   border-radius: 4px;
   padding: 40px;
+  background: rgba(255, 255, 255, 0.817);
 }
 
 #create_headerdiv {
@@ -203,6 +204,7 @@ div input {
   margin: 0px 0px 15px 0px;
   border-radius: 4px;
   padding: 5px 10px 2px 10px;
+  background: rgba(255, 255, 255, 0.228);
 }
 
 #create_formbtn {

@@ -33,11 +33,11 @@
     </main>
 </template>
   
-<style>
+<style scoped>
     /* Add any component specific styles here */
     #posts {
         display: grid;
-        gap: 30px 30px;
+        gap: 50px 30px;
         grid-template-columns: minmax(0, 1fr);  
         padding: 15px 0px 15px 0px;
     }

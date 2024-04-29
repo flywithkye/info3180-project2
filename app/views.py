@@ -203,7 +203,7 @@ def getuser(user_id):
             'firstname': user.firstname,
             'lastname': user.lastname,
             'username': user.username,
-            'joined_on' : user.joined_on,
+            'joined_on' : user.joined_on.strftime("%B %Y"),
             'profile_photo' : user.profile_photo
 
 
