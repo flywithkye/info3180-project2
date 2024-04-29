@@ -19,7 +19,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav navbar-right">
           <li class="nav-item">
-            <RouterLink to="/" class="nav-link active">Home</RouterLink>
+            <RouterLink to="/home" class="nav-link">Home</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
@@ -27,10 +27,8 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
-          <li class="nav-item">
-            <!-- <RouterLink class="nav-link" :to="{ name: 'users', params: { id: userId } }">My Profile</RouterLink> -->
-            <!-- <router-link class="nav-link" :to="{ name: 'users', params: { id: userId } }"> My Profile</router-link> -->
-            
+          <li class="nav-item" v-if="userId !== null">
+            <RouterLink class="nav-link" :to="{ name: 'users', params: { id: getID() } }">My Profile</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/login">Login</RouterLink>
@@ -44,6 +42,7 @@
   </nav>
 </header>
 </template>
+
 
 <script setup>
   import { RouterLink } from "vue-router";
@@ -98,11 +97,16 @@
     window.location.href = '/home';
   }
 
+  function getID(){
+    return userId.value;
+  }
+
   // Initialize userId ref with user ID from token after component is mounted
   onMounted(() => {
     userId.value = getUserIdFromToken();
   });
 </script>
+
 
 <style>
  #header_icon{

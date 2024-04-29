@@ -3,7 +3,7 @@
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
     import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
-
+    
     const userData = ref({});
     const userPosts = ref({});
     const route = useRoute();
@@ -58,7 +58,7 @@
         <div id="user-info">
           <h1 id="user-name">{{ userData.firstname }} {{ userData.lastname }}</h1>
           <p id="user-location">{{ userData.location }}</p>
-          <p id="user-joined">Member since {{userData.joined_on}}</p>
+          <p id="user-joined" v-if="!isObjectEmpty(userData)">Member since {{userData.joined_on}}</p>
           <p id="user-bio">{{ userData.bio }}</p>
         </div>
         <div id="user-stats">
@@ -92,7 +92,7 @@
 <style scoped>
   #userinfopg{
     display: grid;
-    grid-template-columns: minmax(0, 210px) minmax(0, 650px) minmax(0, 250px);
+    grid-template-columns: minmax(0, 210px) minmax(0, 650px) minmax(0, 242px);
     background: rgba(255, 255, 255, 0.817);
     width: 100%;
     min-height: 29vh;
