@@ -21,7 +21,7 @@
           <li class="nav-item">
             <RouterLink to="/home" class="nav-link">Home</RouterLink>
           </li>
-          <li class="nav-item" v-if="getID() !== null">
+          <li class="nav-item">
             <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
           </li>
           <li class="nav-item" v-if="getID() !== null">            
