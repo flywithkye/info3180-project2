@@ -21,19 +21,22 @@
           <li class="nav-item">
             <RouterLink to="/home" class="nav-link">Home</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="getID() !== null">
             <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
           </li>
-          <li class="nav-item">            
+          <li class="nav-item" v-if="getID() !== null">            
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
           <li class="nav-item" v-if="getID() !== null">    
             <RouterLink @click="openMyProfile" class="nav-link" to="">My Profile</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="getID() === null">
             <RouterLink class="nav-link" to="/login">Login</RouterLink>
           </li>
-          <li class="nav-item" @click="Logout">
+          <li class="nav-item" v-if="getID() === null">
+            <RouterLink class="nav-link" to="/register">Register</RouterLink>
+          </li>
+          <li class="nav-item" @click="Logout" v-if="getID() !== null">
             <RouterLink class="nav-link" to="">Logout</RouterLink>
           </li>
         </ul>
