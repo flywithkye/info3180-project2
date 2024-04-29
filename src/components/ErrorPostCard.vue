@@ -24,11 +24,56 @@
 
 
 
-    async function getLikesForPost() {
+  // Function to extract user ID from token
+  function getUserIdFromToken() {
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/posts/${props.post.id}/likes_count
-    `);
-        likesCount.value = response.data.likes_count;
+      // Get the token from local storage
+      const token = localStorage.getItem('access_token');
+      console.log('Token from local storage:', token);
+
+      if (!token) {
+        console.log('No token found in local storage.');
+        return null;
+      }
+
+      // Split the token by the delimiter (assuming a JWT structure)
+      const payloadParts = token.split('.');
+      console.log('Payload parts:', payloadParts);
+
+      if (payloadParts.length !== 3) {
+        console.log('Invalid token format.');
+        return null;
+      }
+
+      // Decode the payload from base64 to a string
+      const decodedPayload = decodeURIComponent(atob(payloadParts[1]).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+      console.log('Decoded payload:', decodedPayload);
+
+      // Parse the decoded payload
+      const parsedPayload = JSON.parse(decodedPayload);
+      console.log('Parsed payload:', parsedPayload);
+
+      // Extract the user id from the payload based on the provided structure
+      const userId = parsedPayload.sub;
+      console.log('Extracted user ID:', userId);
+
+      return userId;
+    } catch (error) {
+      console.error("Error extracting user id from token:", error);
+      return null;
+    }
+  }
+
+
+
+
+async function getLikesForPost() {
+  try {
+    const response = await axios.get(`http://localhost:8080/api/v1/posts/${props.post.id}/likes_count
+`);
+    likesCount.value = response.data.likes_count;
 
         console.log("Likes Count is", likesCount.value);
 
@@ -41,34 +86,16 @@
 
 
 
-
-    async function likePost() {
-        try {
-            const config = {
-            headers: {
-                'user-id': props.post.user_id // Assuming `post` is accessible here
-            }
-            };
-
-            const response = await axios.post(`http://localhost:8080/api/v1/posts/${props.post.id}/like`, null, config);
-            
-            // userData.value = response.data;
-            console.log("Likes Message", response.data);
-        } catch (error) {
-            console.log("This is error");
-            console.error("Error:", error);
-            // Handle error and display user-friendly message
-        }
-        getLikesForPost();
-    }
-
-
-
-    onMounted(() => {
-        getUserInfo();
-        getLikesForPost();
-    });
-
+const loggedInUser = getUserIdFromToken()
+async function likePost() {
+  try {
+    const config = {
+      headers: {
+        'user-id': loggedInUser
+      }
+    };
+  }
+}
     
 </script>
 
