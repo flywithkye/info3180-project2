@@ -20,6 +20,7 @@ footer{
     margin-bottom: 0px;
     margin-top: 40px;
     width: 100%;
+    z-index: 11;
 }
 
 #footerdiv{    

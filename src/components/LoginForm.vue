@@ -50,6 +50,7 @@
     const error = ref('');
     const success = ref('');
     
+    
     const loginUser = async () => {
         try {
 
@@ -79,6 +80,7 @@
             error.value = 'An error occurred while logging in the user.';
         }
     };
+    
 
 </script>
 
@@ -88,6 +90,13 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+    z-index: 2;
+    position: fixed;
+    top: 90px;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
   }
 
   #login_formdiv{

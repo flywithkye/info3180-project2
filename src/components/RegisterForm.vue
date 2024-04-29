@@ -100,6 +100,7 @@ import { routerKey } from 'vue-router';
 
         if (response.data.message === 'User created successfully') {
           success.value = response.data.message;
+          window.location.href = '/login';
         } else {
           error.value = response.data.message;
         }
@@ -119,6 +120,13 @@ import { routerKey } from 'vue-router';
     flex-direction: column;
     align-items: center;
     text-align: center;
+    z-index: 2;
+    position: fixed;
+    top: 80px;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
   }
 
   #regis_formdiv{

@@ -24,7 +24,7 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
           </li>
-          <li class="nav-item">
+          <li class="nav-item">            
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
           <li @click="refreshPage" class="nav-item" v-if="getID() !== null">

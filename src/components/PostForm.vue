@@ -27,7 +27,7 @@
         </div>
 
         <div class="form-group" id="create_formbtndiv">
-          <button type="submit" class="btn" id="create_formbtn">Create Post</button>
+          <button :disabled='!loggedIn' type="submit" class="btn" id="create_formbtn">Create Post</button>
         </div>
       </form>
     </div>
@@ -48,10 +48,10 @@ const formData = ref({
 var userId = ""
 const error = ref('');
 const success = ref('');
+let loggedIn = false;
 
 userId = getUserIdFromToken()
 console.log("Postfrom User Id", userId)
-
 
 
 // Function to extract user ID from token
@@ -63,7 +63,11 @@ function getUserIdFromToken() {
 
     if (!token) {
       console.log('No token found in local storage.');
+      error.value = "You must be logged in to create posts.";               
+      loggedIn = false;
       return null;
+    } else {  
+      loggedIn = true;
     }
 
     // Split the token by the delimiter (assuming a JWT structure)
@@ -94,18 +98,6 @@ function getUserIdFromToken() {
     console.error("Error extracting user id from token:", error);
     return null;
   }
-}
-
-
-
-function isLoggedIn() {
-
-  if (userId == "") {
-
-    alert("User Must be logged in to Make a post")
-  }
-
-
 }
 
 
@@ -142,8 +134,7 @@ const handleFileUpload = (event) => {
 };
 
 onMounted(() => {
-  getUserIdFromToken()
-  isLoggedIn()
+  getUserIdFromToken();
 });
 </script>
 
@@ -153,6 +144,13 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  z-index: 2;
+  position: fixed;
+  top: 70px;
+  left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 #create_formdiv {
