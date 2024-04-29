@@ -27,8 +27,8 @@
           <li class="nav-item">            
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
-          <li @click="refreshPage" class="nav-item" v-if="getID() !== null">
-            <RouterLink class="nav-link" :key="getID()" :to="{ name: 'users', params: { id: getID() } }">My Profile</RouterLink>
+          <li class="nav-item" v-if="getID() !== null">    
+            <RouterLink @click="openMyProfile" class="nav-link" to="">My Profile</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/login">Login</RouterLink>
@@ -49,6 +49,7 @@
   import { ref, onMounted } from "vue";
 
   const userId = ref(null);
+  let url = null;
 
   // Function to extract user ID from token
   function getUserIdFromToken() {
@@ -60,6 +61,8 @@
       if (!token) {
         console.log('No token found in local storage.');
         return null;
+      } else {
+        console.log(url);
       }
 
       // Split the token by the delimiter (assuming a JWT structure)
@@ -101,8 +104,8 @@
     return userId.value;
   }
 
-  function refreshPage(){
-    window.location.reload();
+  function openMyProfile(){
+    window.location.href = "/users/" + getID();
   }
 
   // Initialize userId ref with user ID from token after component is mounted
