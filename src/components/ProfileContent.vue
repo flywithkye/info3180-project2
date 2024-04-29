@@ -1,12 +1,52 @@
 <script setup>
     import axios from 'axios';
-    import { onMounted, ref } from 'vue';
+    import { onMounted, ref} from 'vue';
     import { useRoute } from 'vue-router';
     import ProfileViewPostCard from "@/components/ProfileViewPostCard.vue"
     
     const userData = ref({});
     const userPosts = ref({});
     const route = useRoute();
+
+    // Function to extract user ID from token
+    function getCurrentUserIdFromToken() {
+        try {
+        // Get the token from local storage
+        const token = localStorage.getItem('access_token');
+        console.log('Token from local storage:', token);
+
+        if (!token) {
+            console.log('No token found in local storage.');
+            return null;
+        }
+
+        // Split the token by the delimiter (assuming a JWT structure)
+        const payloadParts = token.split('.');
+        console.log('Payload parts:', payloadParts);
+
+        if (payloadParts.length !== 3) {
+            console.log('Invalid token format.');
+            return null;
+        }
+
+        // Decode the payload from base64 to a string
+        const decodedPayload = decodeURIComponent(atob(payloadParts[1]).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+
+        // Parse the decoded payload
+        const parsedPayload = JSON.parse(decodedPayload);
+
+        // Extract the user id from the payload based on the provided structure
+        const userId = parsedPayload.sub;
+        console.log('Current user ID:', userId);
+
+        return userId;
+        } catch (error) {
+            console.error("Error extracting user id from token:", error);
+            return null;
+        }
+    }
 
     async function getUserInfo() {
     try {
@@ -39,7 +79,15 @@
         return Object.keys(objectName).length === 0;
     }
 
+    function isCurrentUser(){
+        console.log(getCurrentUserIdFromToken());
+        console.log(userData.value.id)
+        console.log(Number(getCurrentUserIdFromToken()) === Number(userData.value.id));
+        return Number(getCurrentUserIdFromToken()) === Number(userData.value.id);
+    }
+
     onMounted(() => {
+        getCurrentUserIdFromToken();
         getUserInfo();
         getUserPosts();
     });
@@ -51,7 +99,6 @@
       <div id="userinfopg">
         <div id="user-info-pic">
           <img
-            alt="User Profile Picture"
             id="user-photo"
             :src="'../uploads/' + userData.profile_photo" />
         </div>
@@ -72,13 +119,16 @@
               <p id="user-posts-name">Posts</p>
             </div>
           </div>
-          <div id="user-buttondiv">
-            <button id="user-button" type="button" class="btn">Follow</button>
+          <div id="user-buttondiv" v-if="!isCurrentUser()">
+            <button id="user-follow-btn" type="button" class="btn">Follow</button>
+          </div>
+          <div id="user-buttondiv" v-else>
+            <button id="user-edit-btn" type="button" class="btn">Profile Settings</button>
           </div>
         </div>
       </div>
       <div id="contentpg">
-        <div id="posts"  v-if="!isObjectEmpty(userPosts)">
+        <div id="posts" v-if="!isObjectEmpty(userPosts)">
           <ProfileViewPostCard :post="post" v-for="post in userPosts" :key="post.id" />
         </div>
         <div id="postnotif" v-else>
@@ -150,7 +200,8 @@
   }
 
   #user-bio{
-    margin-top: 6px;
+    margin-top: 9px;
+    margin-right: 7px;
     color: #3F3E3E;
   }
 
@@ -175,7 +226,7 @@
     padding: 0% 0 0% 0;
   }
 
-  #user-button{
+  #user-follow-btn{
     width: 100%;
     padding-top: 2%;
     padding-bottom: 2%;
@@ -184,7 +235,21 @@
     color: white;
   }
 
-  #user-button:hover {
+  #user-follow-btn:hover {
+    background-color: #347d5c;
+    cursor: pointer;
+  }
+
+  #user-edit-btn{
+    width: 100%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: #3E905C;
+    min-height: 30%;
+    color: white;
+  }
+
+  #user-edit-btn:hover {
     background-color: #347d5c;
     cursor: pointer;
   }

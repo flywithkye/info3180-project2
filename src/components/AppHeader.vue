@@ -27,8 +27,8 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="/posts/new">Make Post</RouterLink>
           </li>
-          <li class="nav-item" v-if="userId !== null">
-            <RouterLink class="nav-link" :to="{ name: 'users', params: { id: getID() } }">My Profile</RouterLink>
+          <li @click="refreshPage" class="nav-item" v-if="getID() !== null">
+            <RouterLink class="nav-link" :key="getID()" :to="{ name: 'users', params: { id: getID() } }">My Profile</RouterLink>
           </li>
           <li class="nav-item">
             <RouterLink class="nav-link" to="/login">Login</RouterLink>
@@ -99,6 +99,10 @@
 
   function getID(){
     return userId.value;
+  }
+
+  function refreshPage(){
+    window.location.reload();
   }
 
   // Initialize userId ref with user ID from token after component is mounted
